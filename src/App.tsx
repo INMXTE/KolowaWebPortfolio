@@ -14,13 +14,34 @@ import {
   Clock,
   User,
   Tag,
+  Settings,
 } from 'lucide-react';
+import AdminPanel from './components/AdminPanel';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const [showPortfolioModal, setShowPortfolioModal] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(false);
+  
+  const handleAdminAccess = () => {
+    setIsAdminPanelOpen(true);
+  };
+  
+  const handleUpdateProjects = (updatedProjects: Project[]) => {
+    // In a real application, this would update a database
+    // For now, we'll just log the updated projects to console
+    console.log('Projects updated:', updatedProjects);
+  };
+  
+  // Handle cursor movement for interactive background
+  const handleMouseMove = (e: React.MouseEvent) => {
+    setCursorPosition({ x: e.clientX, y: e.clientY });
+  };
 
   // Portfolio projects data
   const projects: Project[] = [
@@ -36,6 +57,8 @@ function App() {
       date: 'March 2024',
       services: ['Videography', 'Editing', 'Sound Design'],
       featured: true,
+      videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+      isVideo: true
     },
     {
       id: 2,
@@ -49,6 +72,8 @@ function App() {
       date: 'January 2024',
       services: ['Logo Design', 'Brand Guidelines', 'Marketing Materials'],
       featured: true,
+      videoUrl: '',
+      isVideo: false
     },
     {
       id: 3,
@@ -62,6 +87,8 @@ function App() {
       date: 'November 2023',
       services: ['Character Design', 'Animation', 'Storyboarding'],
       featured: true,
+      videoUrl: 'https://www.youtube.com/embed/oH3L75btuQY',
+      isVideo: true
     },
     {
       id: 4,
@@ -75,6 +102,8 @@ function App() {
       date: 'February 2024',
       services: ['UI/UX Design', 'Web Development', 'Content Strategy'],
       featured: false,
+      videoUrl: '',
+      isVideo: false
     },
     {
       id: 5,
@@ -88,6 +117,8 @@ function App() {
       date: 'April 2024',
       services: ['Event Branding', 'Motion Graphics', 'Print Design'],
       featured: false,
+      videoUrl: 'https://www.youtube.com/embed/7NOSDKb0HlU',
+      isVideo: true
     },
     {
       id: 6,
@@ -101,13 +132,36 @@ function App() {
       date: 'December 2023',
       services: ['Product Design', 'Packaging', 'Brand Strategy'],
       featured: false,
+      videoUrl: '',
+      isVideo: false
+    },
+    {
+      id: 7,
+      title: 'Savanna Dreams',
+      category: 'Short Film',
+      description:
+        'A captivating short film capturing the breathtaking beauty of African landscapes and wildlife through stunning cinematography and emotive storytelling.',
+      image:
+        'https://images.unsplash.com/photo-1516426122078-c23e76319801?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+      client: 'Wildlife Foundation',
+      date: 'May 2024',
+      services: ['Cinematography', 'Direction', 'Color Grading'],
+      featured: false,
+      videoUrl: 'https://www.youtube.com/embed/NpEaa2P7qZI',
+      isVideo: true
     },
   ];
 
   useEffect(() => {
     const handleScroll = () => {
+      // Handle active section
       const sections = document.querySelectorAll('section');
       const scrollPosition = window.scrollY + 200;
+      
+      // Calculate scroll progress percentage for gradient effect
+      const totalHeight = document.body.scrollHeight - window.innerHeight;
+      const progress = (window.scrollY / totalHeight) * 100;
+      setScrollProgress(progress);
 
       sections.forEach((section) => {
         const sectionTop = section.offsetTop;
@@ -123,6 +177,12 @@ function App() {
         }
       });
     };
+
+    // Update KOLOWA text with data-text attribute for gradient stroke
+    const kolowaText = document.querySelector('.text-gradient');
+    if (kolowaText) {
+      kolowaText.setAttribute('data-text', 'KOLOWA');
+    }
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -152,7 +212,25 @@ function App() {
   };
 
   const handleEmailClick = () => {
-    window.location.href = 'mailto:jasonroibaraka@gmail.com?subject=Project%20Inquiry';
+    window.location.href = 'mailto:kolowa@gmail.com?subject=Project%20Inquiry';
+  };
+  
+  const handleContactSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const form = e.currentTarget as HTMLFormElement;
+    const nameInput = form.elements.namedItem('name') as HTMLInputElement;
+    const emailInput = form.elements.namedItem('email') as HTMLInputElement;
+    const messageInput = form.elements.namedItem('message') as HTMLTextAreaElement;
+    
+    if (!nameInput || !emailInput || !messageInput) return;
+    
+    const subject = `KOLOWA Website Inquiry from ${nameInput.value}`;
+    const body = `Name: ${nameInput.value}\nEmail: ${emailInput.value}\n\nMessage:\n${messageInput.value}`;
+    
+    window.location.href = `mailto:kolowa@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    
+    // Reset form
+    form.reset();
   };
 
   const featuredProjects = projects.filter((project) => project.featured);
@@ -161,10 +239,36 @@ function App() {
   return (
     <div className="relative bg-black text-white min-h-screen overflow-x-hidden">
       {/* Background with stars and gradient */}
-      <div className="fixed inset-0 bg-gradient-to-b from-black via-[#1a0000] to-[#500000] z-0">
+      <div 
+        className="fixed inset-0 z-0" 
+        onMouseMove={handleMouseMove}
+      >
+        {/* Scroll-based gradient background */}
+        <div 
+          className="scroll-gradient" 
+          style={{ transform: `translateY(${scrollProgress * 0.5}%)` }}
+        ></div>
+        
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')] bg-cover opacity-20 mix-blend-soft-light"></div>
+        
         {/* Stars */}
-        <div className="stars absolute inset-0"></div>
+        <div 
+          className="stars absolute inset-0"
+          style={{ 
+            transform: `translate(${(cursorPosition.x - window.innerWidth/2) * 0.01}px, ${(cursorPosition.y - window.innerHeight/2) * 0.01}px)` 
+          }}
+        ></div>
+        
+        {/* Cursor glow effect */}
+        <div 
+          className="cursor-glow" 
+          style={{
+            left: cursorPosition.x,
+            top: cursorPosition.y,
+            width: '300px',
+            height: '300px'
+          }}
+        ></div>
       </div>
 
       {/* Header */}
@@ -213,13 +317,24 @@ function App() {
           </button>
         </nav>
 
-        {/* Mobile Menu Button */}
-        <button
-          className="md:hidden text-white focus:outline-none"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-        >
-          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        <div className="flex items-center">
+          {/* Admin button */}
+          <button
+            onClick={handleAdminAccess}
+            className="text-gray-400 hover:text-white mr-4 hidden md:block"
+            title="Admin Panel"
+          >
+            <Settings size={20} />
+          </button>
+
+          {/* Mobile Menu Button */}
+          <button
+            className="md:hidden text-white focus:outline-none"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </header>
 
       {/* Mobile Navigation */}
@@ -439,6 +554,27 @@ function App() {
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
+                  
+                  {project.isVideo && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-16 h-16 rounded-full bg-red-500 bg-opacity-80 flex items-center justify-center transform transition-transform duration-500 group-hover:scale-110">
+                        <svg 
+                          xmlns="http://www.w3.org/2000/svg" 
+                          width="24" 
+                          height="24" 
+                          viewBox="0 0 24 24" 
+                          fill="none" 
+                          stroke="currentColor" 
+                          strokeWidth="2" 
+                          strokeLinecap="round" 
+                          strokeLinejoin="round"
+                        >
+                          <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                        </svg>
+                      </div>
+                    </div>
+                  )}
+                  
                   <div className="absolute bottom-0 left-0 p-6">
                     <h4 className="text-xl font-bold mb-1">{project.title}</h4>
                     <p className="text-sm text-gray-300">{project.category}</p>
@@ -538,26 +674,32 @@ function App() {
                   <div>
                     <form
                       className="space-y-4"
-                      onSubmit={(e) => e.preventDefault()}
+                      onSubmit={handleContactSubmit}
                     >
                       <div>
                         <input
                           type="text"
+                          name="name"
                           placeholder="Your Name"
+                          required
                           className="w-full bg-transparent border-b border-gray-700 py-2 focus:outline-none focus:border-red-500 transition-colors"
                         />
                       </div>
                       <div>
                         <input
                           type="email"
+                          name="email"
                           placeholder="Your Email"
+                          required
                           className="w-full bg-transparent border-b border-gray-700 py-2 focus:outline-none focus:border-red-500 transition-colors"
                         />
                       </div>
                       <div>
                         <textarea
+                          name="message"
                           placeholder="Your Message"
                           rows={4}
+                          required
                           className="w-full bg-transparent border-b border-gray-700 py-2 focus:outline-none focus:border-red-500 transition-colors"
                         ></textarea>
                       </div>
@@ -631,12 +773,27 @@ function App() {
             </button>
 
             <div className="h-80 relative">
-              <img
-                src={selectedProject.image}
-                alt={selectedProject.title}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] to-transparent"></div>
+              {selectedProject.isVideo && selectedProject.videoUrl ? (
+                <div className="w-full h-full">
+                  <iframe 
+                    src={selectedProject.videoUrl} 
+                    title={selectedProject.title}
+                    className="w-full h-full" 
+                    frameBorder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowFullScreen
+                  ></iframe>
+                </div>
+              ) : (
+                <>
+                  <img
+                    src={selectedProject.image}
+                    alt={selectedProject.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] to-transparent"></div>
+                </>
+              )}
             </div>
 
             <div className="p-8">
@@ -647,13 +804,25 @@ function App() {
                   </h3>
                   <p className="text-red-500">{selectedProject.category}</p>
                 </div>
-                <a
-                  href="#"
-                  className="inline-flex items-center text-yellow-400 mt-4 md:mt-0"
-                >
-                  <span className="mr-2">View Live</span>
-                  <ExternalLink size={16} />
-                </a>
+                {selectedProject.isVideo && selectedProject.videoUrl ? (
+                  <a
+                    href={selectedProject.videoUrl.replace('embed/', 'watch?v=')}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center text-yellow-400 mt-4 md:mt-0"
+                  >
+                    <span className="mr-2">Watch on YouTube</span>
+                    <ExternalLink size={16} />
+                  </a>
+                ) : (
+                  <a
+                    href="#"
+                    className="inline-flex items-center text-yellow-400 mt-4 md:mt-0"
+                  >
+                    <span className="mr-2">View Live</span>
+                    <ExternalLink size={16} />
+                  </a>
+                )}
               </div>
 
               <p className="text-gray-300 mb-8">
@@ -691,6 +860,14 @@ function App() {
           </div>
         </div>
       )}
+
+      {/* Admin Panel */}
+      <AdminPanel 
+        isOpen={isAdminPanelOpen}
+        onClose={() => setIsAdminPanelOpen(false)}
+        projects={projects}
+        onUpdateProjects={handleUpdateProjects}
+      />
     </div>
   );
 }
@@ -706,6 +883,8 @@ interface Project {
   date: string;
   services: string[];
   featured: boolean;
+  videoUrl?: string;
+  isVideo?: boolean;
 }
 
 export default App;

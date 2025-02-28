@@ -25,6 +25,7 @@ body {
   background-size: 200px 200px;
   animation: twinkle 5s ease-in-out infinite alternate;
   opacity: 0.3;
+  transition: background-position 0.3s ease;
 }
 
 @keyframes twinkle {
@@ -34,6 +35,39 @@ body {
   100% {
     background-position: -100px 100px;
   }
+}
+
+/* Interactive background */
+.interactive-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.cursor-glow {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(255,0,0,0.2) 0%, rgba(0,0,0,0) 70%);
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s;
+}
+
+/* Scroll-based gradient background */
+.scroll-gradient {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, #000000, #1a0000, #500000);
+  z-index: -1;
+  opacity: 1;
+  transition: transform 0.5s ease-out;
 }
 
 /* Smooth scrolling */
@@ -66,6 +100,30 @@ html {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   text-fill-color: transparent;
+  position: relative;
+  transition: all 0.5s ease;
+}
+
+.text-gradient::before {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -1;
+  -webkit-text-stroke: 2px transparent;
+  -webkit-text-stroke-image: linear-gradient(90deg, #ff4d4d, #ff9966);
+  color: transparent;
+  transition: all 0.5s ease;
+}
+
+.text-gradient:hover::before {
+  -webkit-text-stroke-image: linear-gradient(270deg, #ff4d4d, #ff9966);
+}
+
+.text-gradient:hover {
+  background: linear-gradient(270deg, #ff4d4d, #ff9966);
+  -webkit-background-clip: text;
+  background-clip: text;
 }
 
 /* Glow effects */
