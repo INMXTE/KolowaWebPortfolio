@@ -52,7 +52,7 @@ function App() {
   const [showMoreProjects, setShowMoreProjects] = useState(false);
   
   // Admin password
-  const adminPassword = "kolowa2024"; // Password is: kolowa2024
+  const adminPassword = "KOLOWA2025"; // Password is: KOLOWA2025
   
   // Portfolio projects data
   const projects: Project[] = [

@@ -33,7 +33,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
   const [activeTab, setActiveTab] = useState('projects');
   const [password, setPassword] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const correctPassword = 'kolowa2025';
+  const correctPassword = 'KOLOWA2025';
   const [showPassword, setShowPassword] = useState(false);
   const [newProject, setNewProject] = useState<Partial<Project>>({
     title: '',
