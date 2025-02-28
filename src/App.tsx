@@ -27,7 +27,7 @@ function App() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(false);
-  
+
   // Initial portfolio projects data
   const initialProjects: Project[] = [
     {
@@ -136,7 +136,7 @@ function App() {
       isVideo: true,
     },
   ];
-  
+
   const [projectsData, setProjectsData] = useState<Project[]>(initialProjects);
 
   const handleAdminAccess = () => {
@@ -161,7 +161,7 @@ function App() {
 
   // State for more projects visibility
   const [showMoreProjects, setShowMoreProjects] = useState(false);
-  
+
   // Admin password
   const adminPassword = "KOLOWA2025"; // Password is: KOLOWA2025
 
@@ -258,10 +258,10 @@ function App() {
         {/* Scroll-based gradient background */}
         <div
           className="scroll-gradient"
-          style={{ 
+          style={{
             transform: `translateY(${scrollProgress * 0.5}%)`,
-            opacity: 0.7 + (scrollProgress * 0.003),
-            filter: `hue-rotate(${scrollProgress * 2}deg)`
+            opacity: 0.7 + scrollProgress * 0.003,
+            filter: `hue-rotate(${scrollProgress * 2}deg)`,
           }}
         ></div>
 
@@ -554,7 +554,10 @@ function App() {
         </section>
 
         {/* More Projects Section */}
-        <section id="more-projects" className={`py-24 ${showMoreProjects ? 'opacity-100 transition-opacity duration-1000' : 'hidden'}`}>
+        <section
+          id="more-projects"
+          className={`py-24 ${showMoreProjects ? "opacity-100 transition-opacity duration-1000" : "hidden"}`}
+        >
           <div className="container mx-auto px-6">
             <h3 className="text-4xl font-bold mb-12 text-center">
               More Projects
@@ -753,24 +756,6 @@ function App() {
                 className="text-gray-500 hover:text-white transition-colors social-icon"
               >
                 <Instagram size={20} />
-              </a>
-              <a
-                href="#"
-                className="text-gray-500 hover:text-white transition-colors social-icon"
-              >
-                <Twitter size={20} />
-              </a>
-              <a
-                href="#"
-                className="text-gray-500 hover:text-white transition-colors social-icon"
-              >
-                <Facebook size={20} />
-              </a>
-              <a
-                href="#"
-                className="text-gray-500 hover:text-white transition-colors social-icon"
-              >
-                <Linkedin size={20} />
               </a>
             </div>
           </div>
