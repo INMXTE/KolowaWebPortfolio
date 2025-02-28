@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Menu,
   X,
@@ -15,29 +15,29 @@ import {
   User,
   Tag,
   Settings,
-} from 'lucide-react';
-import AdminPanel from './components/AdminPanel';
+} from "lucide-react";
+import AdminPanel from "./components/AdminPanel";
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('home');
+  const [activeSection, setActiveSection] = useState("home");
   const [showPortfolioModal, setShowPortfolioModal] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(false);
-  
+
   const handleAdminAccess = () => {
     setIsAdminPanelOpen(true);
   };
-  
+
   const handleUpdateProjects = (updatedProjects: Project[]) => {
     // In a real application, this would update a database
     // For now, we'll just log the updated projects to console
-    console.log('Projects updated:', updatedProjects);
+    console.log("Projects updated:", updatedProjects);
   };
-  
+
   // Handle cursor movement for interactive background
   const handleMouseMove = (e: React.MouseEvent) => {
     setCursorPosition({ x: e.clientX, y: e.clientY });
@@ -47,117 +47,117 @@ function App() {
   const projects: Project[] = [
     {
       id: 1,
-      title: 'Mekatili wa menza',
-      category: 'Documentary',
+      title: "Mekatili wa menza",
+      category: "Documentary",
       description:
-        'A powerful documentary showcasing indigenous cultural preservation through the eyes of local communities. This project explores the rich heritage and traditions that are at risk of being lost in the modern world.',
+        "A powerful documentary showcasing indigenous cultural preservation through the eyes of local communities. This project explores the rich heritage and traditions that are at risk of being lost in the modern world.",
       image:
-        'https://images.unsplash.com/photo-1516939884455-1445c8652f83?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
-      client: 'National Heritage Foundation',
-      date: 'March 2024',
-      services: ['Videography', 'Editing', 'Sound Design'],
+        "https://images.unsplash.com/photo-1516939884455-1445c8652f83?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+      client: "National Heritage Foundation",
+      date: "March 2024",
+      services: ["Videography", "Editing", "Sound Design"],
       featured: true,
-      videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-      isVideo: true
+      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      isVideo: true,
     },
     {
       id: 2,
-      title: 'MSINGI',
-      category: 'Brand Identity',
+      title: "MSINGI",
+      category: "Brand Identity",
       description:
-        'Complete brand identity design for MSINGI, an educational technology startup focused on providing accessible learning tools for underserved communities across East Africa.',
+        "Complete brand identity design for MSINGI, an educational technology startup focused on providing accessible learning tools for underserved communities across East Africa.",
       image:
-        'https://images.unsplash.com/photo-1531384441138-2736e62e0919?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      client: 'MSINGI EdTech',
-      date: 'January 2024',
-      services: ['Logo Design', 'Brand Guidelines', 'Marketing Materials'],
+        "https://images.unsplash.com/photo-1531384441138-2736e62e0919?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      client: "MSINGI EdTech",
+      date: "January 2024",
+      services: ["Logo Design", "Brand Guidelines", "Marketing Materials"],
       featured: true,
-      videoUrl: '',
-      isVideo: false
+      videoUrl: "",
+      isVideo: false,
     },
     {
       id: 3,
-      title: 'HEKAYA',
-      category: 'Animation',
+      title: "HEKAYA",
+      category: "Animation",
       description:
-        'An animated short film celebrating African folklore and storytelling traditions. HEKAYA brings ancient tales to life through vibrant animation and authentic voice acting.',
+        "An animated short film celebrating African folklore and storytelling traditions. HEKAYA brings ancient tales to life through vibrant animation and authentic voice acting.",
       image:
-        'https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      client: 'Storytellers Collective',
-      date: 'November 2023',
-      services: ['Character Design', 'Animation', 'Storyboarding'],
+        "https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      client: "Storytellers Collective",
+      date: "November 2023",
+      services: ["Character Design", "Animation", "Storyboarding"],
       featured: true,
-      videoUrl: 'https://www.youtube.com/embed/oH3L75btuQY',
-      isVideo: true
+      videoUrl: "https://www.youtube.com/embed/oH3L75btuQY",
+      isVideo: true,
     },
     {
       id: 4,
-      title: 'Bahari Blue',
-      category: 'Website Design',
+      title: "Bahari Blue",
+      category: "Website Design",
       description:
-        'A comprehensive website redesign for Bahari Blue, a marine conservation organization working to protect coral reefs along the East African coastline.',
+        "A comprehensive website redesign for Bahari Blue, a marine conservation organization working to protect coral reefs along the East African coastline.",
       image:
-        'https://images.unsplash.com/photo-1582750433449-648ed127bb54?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
-      client: 'Bahari Blue Conservation',
-      date: 'February 2024',
-      services: ['UI/UX Design', 'Web Development', 'Content Strategy'],
+        "https://images.unsplash.com/photo-1582750433449-648ed127bb54?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+      client: "Bahari Blue Conservation",
+      date: "February 2024",
+      services: ["UI/UX Design", "Web Development", "Content Strategy"],
       featured: false,
-      videoUrl: '',
-      isVideo: false
+      videoUrl: "",
+      isVideo: false,
     },
     {
       id: 5,
-      title: 'Nyota Festival',
-      category: 'Event Branding',
+      title: "Nyota Festival",
+      category: "Event Branding",
       description:
-        'Complete event branding and promotional materials for Nyota Festival, an annual music and arts celebration showcasing emerging talent from across the continent.',
+        "Complete event branding and promotional materials for Nyota Festival, an annual music and arts celebration showcasing emerging talent from across the continent.",
       image:
-        'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
-      client: 'Nyota Arts Foundation',
-      date: 'April 2024',
-      services: ['Event Branding', 'Motion Graphics', 'Print Design'],
+        "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+      client: "Nyota Arts Foundation",
+      date: "April 2024",
+      services: ["Event Branding", "Motion Graphics", "Print Design"],
       featured: false,
-      videoUrl: 'https://www.youtube.com/embed/7NOSDKb0HlU',
-      isVideo: true
+      videoUrl: "https://www.youtube.com/embed/7NOSDKb0HlU",
+      isVideo: true,
     },
     {
       id: 6,
-      title: 'Jasiri',
-      category: 'Product Design',
+      title: "Jasiri",
+      category: "Product Design",
       description:
-        'Product design and packaging for Jasiri, a sustainable fashion brand creating contemporary clothing inspired by traditional African textiles and techniques.',
+        "Product design and packaging for Jasiri, a sustainable fashion brand creating contemporary clothing inspired by traditional African textiles and techniques.",
       image:
-        'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
-      client: 'Jasiri Apparel',
-      date: 'December 2023',
-      services: ['Product Design', 'Packaging', 'Brand Strategy'],
+        "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+      client: "Jasiri Apparel",
+      date: "December 2023",
+      services: ["Product Design", "Packaging", "Brand Strategy"],
       featured: false,
-      videoUrl: '',
-      isVideo: false
+      videoUrl: "",
+      isVideo: false,
     },
     {
       id: 7,
-      title: 'Savanna Dreams',
-      category: 'Short Film',
+      title: "Savanna Dreams",
+      category: "Short Film",
       description:
-        'A captivating short film capturing the breathtaking beauty of African landscapes and wildlife through stunning cinematography and emotive storytelling.',
+        "A captivating short film capturing the breathtaking beauty of African landscapes and wildlife through stunning cinematography and emotive storytelling.",
       image:
-        'https://images.unsplash.com/photo-1516426122078-c23e76319801?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      client: 'Wildlife Foundation',
-      date: 'May 2024',
-      services: ['Cinematography', 'Direction', 'Color Grading'],
+        "https://images.unsplash.com/photo-1516426122078-c23e76319801?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      client: "Wildlife Foundation",
+      date: "May 2024",
+      services: ["Cinematography", "Direction", "Color Grading"],
       featured: false,
-      videoUrl: 'https://www.youtube.com/embed/NpEaa2P7qZI',
-      isVideo: true
+      videoUrl: "https://www.youtube.com/embed/NpEaa2P7qZI",
+      isVideo: true,
     },
   ];
 
   useEffect(() => {
     const handleScroll = () => {
       // Handle active section
-      const sections = document.querySelectorAll('section');
+      const sections = document.querySelectorAll("section");
       const scrollPosition = window.scrollY + 200;
-      
+
       // Calculate scroll progress percentage for gradient effect
       const totalHeight = document.body.scrollHeight - window.innerHeight;
       const progress = (window.scrollY / totalHeight) * 100;
@@ -166,7 +166,7 @@ function App() {
       sections.forEach((section) => {
         const sectionTop = section.offsetTop;
         const sectionHeight = section.offsetHeight;
-        const sectionId = section.getAttribute('id');
+        const sectionId = section.getAttribute("id");
 
         if (
           scrollPosition >= sectionTop &&
@@ -179,13 +179,13 @@ function App() {
     };
 
     // Update KOLOWA text with data-text attribute for gradient stroke
-    const kolowaText = document.querySelector('.text-gradient');
+    const kolowaText = document.querySelector(".text-gradient");
     if (kolowaText) {
-      kolowaText.setAttribute('data-text', 'KOLOWA');
+      kolowaText.setAttribute("data-text", "KOLOWA");
     }
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const scrollToSection = (sectionId: string) => {
@@ -193,7 +193,7 @@ function App() {
     if (section) {
       window.scrollTo({
         top: section.offsetTop,
-        behavior: 'smooth',
+        behavior: "smooth",
       });
       setActiveSection(sectionId);
       setIsMenuOpen(false);
@@ -203,32 +203,34 @@ function App() {
   const openProjectModal = (project: Project) => {
     setSelectedProject(project);
     setShowPortfolioModal(true);
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
   };
 
   const closeProjectModal = () => {
     setShowPortfolioModal(false);
-    document.body.style.overflow = 'auto';
+    document.body.style.overflow = "auto";
   };
 
   const handleEmailClick = () => {
-    window.location.href = 'mailto:kolowa@gmail.com?subject=Project%20Inquiry';
+    window.location.href = "mailto:kolowa@gmail.com?subject=Project%20Inquiry";
   };
-  
+
   const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const form = e.currentTarget as HTMLFormElement;
-    const nameInput = form.elements.namedItem('name') as HTMLInputElement;
-    const emailInput = form.elements.namedItem('email') as HTMLInputElement;
-    const messageInput = form.elements.namedItem('message') as HTMLTextAreaElement;
-    
+    const nameInput = form.elements.namedItem("name") as HTMLInputElement;
+    const emailInput = form.elements.namedItem("email") as HTMLInputElement;
+    const messageInput = form.elements.namedItem(
+      "message",
+    ) as HTMLTextAreaElement;
+
     if (!nameInput || !emailInput || !messageInput) return;
-    
+
     const subject = `KOLOWA Website Inquiry from ${nameInput.value}`;
     const body = `Name: ${nameInput.value}\nEmail: ${emailInput.value}\n\nMessage:\n${messageInput.value}`;
-    
+
     window.location.href = `mailto:kolowa@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    
+
     // Reset form
     form.reset();
   };
@@ -239,34 +241,31 @@ function App() {
   return (
     <div className="relative bg-black text-white min-h-screen overflow-x-hidden">
       {/* Background with stars and gradient */}
-      <div 
-        className="fixed inset-0 z-0" 
-        onMouseMove={handleMouseMove}
-      >
+      <div className="fixed inset-0 z-0" onMouseMove={handleMouseMove}>
         {/* Scroll-based gradient background */}
-        <div 
-          className="scroll-gradient" 
+        <div
+          className="scroll-gradient"
           style={{ transform: `translateY(${scrollProgress * 0.5}%)` }}
         ></div>
-        
+
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')] bg-cover opacity-20 mix-blend-soft-light"></div>
-        
+
         {/* Stars */}
-        <div 
+        <div
           className="stars absolute inset-0"
-          style={{ 
-            transform: `translate(${(cursorPosition.x - window.innerWidth/2) * 0.01}px, ${(cursorPosition.y - window.innerHeight/2) * 0.01}px)` 
+          style={{
+            transform: `translate(${(cursorPosition.x - window.innerWidth / 2) * 0.01}px, ${(cursorPosition.y - window.innerHeight / 2) * 0.01}px)`,
           }}
         ></div>
-        
+
         {/* Cursor glow effect */}
-        <div 
-          className="cursor-glow" 
+        <div
+          className="cursor-glow"
           style={{
             left: cursorPosition.x,
             top: cursorPosition.y,
-            width: '300px',
-            height: '300px'
+            width: "300px",
+            height: "300px",
           }}
         ></div>
       </div>
@@ -275,8 +274,8 @@ function App() {
       <header className="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex justify-between items-center backdrop-blur-sm bg-black/30">
         <div className="flex items-center">
           <div className="px-5">
-            {' '}
-            <img src="KOLOWA-LOGO-2-T.png"></img>{' '}
+            {" "}
+            <img src="https://i.postimg.cc/0y3LvX0f/FAVICON.png"></img>{" "}
           </div>
           <span className="font-bold tracking-wider">KOLOWA</span>
         </div>
@@ -284,33 +283,33 @@ function App() {
         {/* Desktop Navigation */}
         <nav className="hidden md:flex space-x-8">
           <button
-            onClick={() => scrollToSection('home')}
+            onClick={() => scrollToSection("home")}
             className={`${
-              activeSection === 'home' ? 'text-red-500' : 'text-white'
+              activeSection === "home" ? "text-red-500" : "text-white"
             } hover:text-red-400 transition-colors`}
           >
             Home
           </button>
           <button
-            onClick={() => scrollToSection('about')}
+            onClick={() => scrollToSection("about")}
             className={`${
-              activeSection === 'about' ? 'text-red-500' : 'text-white'
+              activeSection === "about" ? "text-red-500" : "text-white"
             } hover:text-red-400 transition-colors`}
           >
             About
           </button>
           <button
-            onClick={() => scrollToSection('portfolio')}
+            onClick={() => scrollToSection("portfolio")}
             className={`${
-              activeSection === 'portfolio' ? 'text-red-500' : 'text-white'
+              activeSection === "portfolio" ? "text-red-500" : "text-white"
             } hover:text-red-400 transition-colors`}
           >
             Portfolio
           </button>
           <button
-            onClick={() => scrollToSection('contact')}
+            onClick={() => scrollToSection("contact")}
             className={`${
-              activeSection === 'contact' ? 'text-red-500' : 'text-white'
+              activeSection === "contact" ? "text-red-500" : "text-white"
             } hover:text-red-400 transition-colors`}
           >
             Contact
@@ -342,25 +341,25 @@ function App() {
         <div className="fixed inset-0 bg-black bg-opacity-95 z-40 flex flex-col items-center justify-center md:hidden">
           <nav className="flex flex-col space-y-8 text-center">
             <button
-              onClick={() => scrollToSection('home')}
+              onClick={() => scrollToSection("home")}
               className="text-2xl font-bold hover:text-red-500 transition-colors"
             >
               Home
             </button>
             <button
-              onClick={() => scrollToSection('about')}
+              onClick={() => scrollToSection("about")}
               className="text-2xl font-bold hover:text-red-500 transition-colors"
             >
               About
             </button>
             <button
-              onClick={() => scrollToSection('portfolio')}
+              onClick={() => scrollToSection("portfolio")}
               className="text-2xl font-bold hover:text-red-500 transition-colors"
             >
               Portfolio
             </button>
             <button
-              onClick={() => scrollToSection('contact')}
+              onClick={() => scrollToSection("contact")}
               className="text-2xl font-bold hover:text-red-500 transition-colors"
             >
               Contact
@@ -385,7 +384,7 @@ function App() {
               through innovative design, animation, and digital experiences.
             </p>
             <button
-              onClick={() => scrollToSection('about')}
+              onClick={() => scrollToSection("about")}
               className="px-6 py-2 border border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition-colors rounded-full glow-button"
             >
               Explore Us
@@ -513,7 +512,7 @@ function App() {
 
             <div className="flex justify-center">
               <button
-                onClick={() => scrollToSection('more-projects')}
+                onClick={() => scrollToSection("more-projects")}
                 className="flex items-center space-x-2 bg-yellow-400 text-black px-6 py-3 rounded-lg font-medium hover:bg-yellow-300 transition-colors glow-button-yellow"
               >
                 <span>More Projects</span>
@@ -554,19 +553,19 @@ function App() {
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
-                  
+
                   {project.isVideo && (
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="w-16 h-16 rounded-full bg-red-500 bg-opacity-80 flex items-center justify-center transform transition-transform duration-500 group-hover:scale-110">
-                        <svg 
-                          xmlns="http://www.w3.org/2000/svg" 
-                          width="24" 
-                          height="24" 
-                          viewBox="0 0 24 24" 
-                          fill="none" 
-                          stroke="currentColor" 
-                          strokeWidth="2" 
-                          strokeLinecap="round" 
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
                           strokeLinejoin="round"
                         >
                           <polygon points="5 3 19 12 5 21 5 3"></polygon>
@@ -574,7 +573,7 @@ function App() {
                       </div>
                     </div>
                   )}
-                  
+
                   <div className="absolute bottom-0 left-0 p-6">
                     <h4 className="text-xl font-bold mb-1">{project.title}</h4>
                     <p className="text-sm text-gray-300">{project.category}</p>
@@ -672,10 +671,7 @@ function App() {
                   </div>
 
                   <div>
-                    <form
-                      className="space-y-4"
-                      onSubmit={handleContactSubmit}
-                    >
+                    <form className="space-y-4" onSubmit={handleContactSubmit}>
                       <div>
                         <input
                           type="text"
@@ -775,12 +771,12 @@ function App() {
             <div className="h-80 relative">
               {selectedProject.isVideo && selectedProject.videoUrl ? (
                 <div className="w-full h-full">
-                  <iframe 
-                    src={selectedProject.videoUrl} 
+                  <iframe
+                    src={selectedProject.videoUrl}
                     title={selectedProject.title}
-                    className="w-full h-full" 
-                    frameBorder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    className="w-full h-full"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
                   ></iframe>
                 </div>
@@ -806,7 +802,10 @@ function App() {
                 </div>
                 {selectedProject.isVideo && selectedProject.videoUrl ? (
                   <a
-                    href={selectedProject.videoUrl.replace('embed/', 'watch?v=')}
+                    href={selectedProject.videoUrl.replace(
+                      "embed/",
+                      "watch?v=",
+                    )}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center text-yellow-400 mt-4 md:mt-0"
@@ -852,7 +851,7 @@ function App() {
                     <h4 className="font-bold text-sm text-gray-400">
                       SERVICES
                     </h4>
-                    <p>{selectedProject.services.join(', ')}</p>
+                    <p>{selectedProject.services.join(", ")}</p>
                   </div>
                 </div>
               </div>
@@ -862,7 +861,7 @@ function App() {
       )}
 
       {/* Admin Panel */}
-      <AdminPanel 
+      <AdminPanel
         isOpen={isAdminPanelOpen}
         onClose={() => setIsAdminPanelOpen(false)}
         projects={projects}
