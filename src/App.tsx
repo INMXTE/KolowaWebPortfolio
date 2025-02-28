@@ -29,7 +29,12 @@ function App() {
   const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(false);
 
   const handleAdminAccess = () => {
-    setIsAdminPanelOpen(true);
+    const password = prompt("Enter admin password:");
+    if (password === adminPassword) {
+      setIsAdminPanelOpen(true);
+    } else if (password !== null) {
+      alert("Incorrect password");
+    }
   };
 
   const handleUpdateProjects = (updatedProjects: Project[]) => {
@@ -43,6 +48,12 @@ function App() {
     setCursorPosition({ x: e.clientX, y: e.clientY });
   };
 
+  // State for more projects visibility
+  const [showMoreProjects, setShowMoreProjects] = useState(false);
+  
+  // Admin password
+  const adminPassword = "kolowa2024"; // Password is: kolowa2024
+  
   // Portfolio projects data
   const projects: Project[] = [
     {
@@ -245,7 +256,11 @@ function App() {
         {/* Scroll-based gradient background */}
         <div
           className="scroll-gradient"
-          style={{ transform: `translateY(${scrollProgress * 0.5}%)` }}
+          style={{ 
+            transform: `translateY(${scrollProgress * 0.5}%)`,
+            opacity: 0.7 + (scrollProgress * 0.003),
+            filter: `hue-rotate(${scrollProgress * 2}deg)`
+          }}
         ></div>
 
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')] bg-cover opacity-20 mix-blend-soft-light"></div>
@@ -512,7 +527,10 @@ function App() {
 
             <div className="flex justify-center">
               <button
-                onClick={() => scrollToSection("more-projects")}
+                onClick={() => {
+                  setShowMoreProjects(true);
+                  setTimeout(() => scrollToSection("more-projects"), 100);
+                }}
                 className="flex items-center space-x-2 bg-yellow-400 text-black px-6 py-3 rounded-lg font-medium hover:bg-yellow-300 transition-colors glow-button-yellow"
               >
                 <span>More Projects</span>
@@ -534,7 +552,7 @@ function App() {
         </section>
 
         {/* More Projects Section */}
-        <section id="more-projects" className="py-24">
+        <section id="more-projects" className={`py-24 ${showMoreProjects ? 'opacity-100 transition-opacity duration-1000' : 'hidden'}`}>
           <div className="container mx-auto px-6">
             <h3 className="text-4xl font-bold mb-12 text-center">
               More Projects
