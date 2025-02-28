@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Save, Plus, Trash, Eye, EyeOff } from 'lucide-react';
+import { X, Save, Plus, Trash, Eye, EyeOff, Lock } from 'lucide-react';
 
 interface Project {
   id: number;
@@ -161,32 +161,35 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
             </button>
           </div>
 
-          <form onSubmit={handleLogin} className="space-y-4">
+          <form onSubmit={handleLogin} className="space-y-6">
             <div>
-              <label className="block text-gray-300 mb-2">Password</label>
+              <label className="block text-gray-300 mb-2">Admin Password</label>
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-gray-900 border border-gray-700 rounded px-4 py-2 text-white"
+                  className="w-full bg-transparent border-b border-gray-700 py-2 focus:outline-none focus:border-red-500 transition-colors"
                   required
                 />
                 <button 
                   type="button"
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-red-500 transition-colors"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
             </div>
-            <button 
-              type="submit" 
-              className="w-full bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors"
-            >
-              Login
-            </button>
+            <div className="flex justify-center pt-2">
+              <button
+                type="submit"
+                className="px-6 py-2 border border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition-colors rounded-full glow-button flex items-center space-x-2"
+              >
+                <span>Access Panel</span>
+                <Lock size={16} />
+              </button>
+            </div>
           </form>
         </div>
       </div>
