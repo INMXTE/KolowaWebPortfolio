@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { X, Save, Plus, Trash, Eye, EyeOff } from 'lucide-react';
 
@@ -65,7 +64,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
 
   const handleUpdateProject = (index: number, field: keyof Project, value: any) => {
     const updatedProjects = [...editableProjects];
-    
+
     if (field === 'services') {
       // Handle services as array
       updatedProjects[index][field] = value.split(',').map((service: string) => service.trim());
@@ -76,7 +75,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
       // Handle other fields
       (updatedProjects[index] as any)[field] = value;
     }
-    
+
     setEditableProjects(updatedProjects);
   };
 
@@ -98,10 +97,10 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
       alert('Title, category, and image are required!');
       return;
     }
-    
+
     // Generate a new unique ID for the project
     const newId = Math.max(...editableProjects.map(p => p.id), 0) + 1;
-    
+
     // Create the new project with all required fields
     const projectToAdd: Project = {
       id: newId,
@@ -118,11 +117,11 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
       videoUrl: newProject.videoUrl || '',
       isVideo: Boolean(newProject.isVideo)
     };
-    
+
     // Add the new project to the list
     const updatedProjects = [...editableProjects, projectToAdd];
     setEditableProjects(updatedProjects);
-    
+
     // Reset the form
     setNewProject({
       title: '',
@@ -136,43 +135,9 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
       videoUrl: '',
       isVideo: false
     });
-    
+
     // Optional: Switch back to projects tab
     setActiveTab('projects');
-
-    const newId = Math.max(...editableProjects.map(p => p.id), 0) + 1;
-    
-    const projectToAdd: Project = {
-      id: newId,
-      title: newProject.title || '',
-      category: newProject.category || '',
-      description: newProject.description || '',
-      image: newProject.image || '',
-      client: newProject.client || '',
-      date: newProject.date || '',
-      services: typeof newProject.services === 'string' 
-        ? (newProject.services as string).split(',').map(s => s.trim())
-        : (newProject.services as string[] || []),
-      featured: Boolean(newProject.featured),
-      videoUrl: newProject.videoUrl || '',
-      isVideo: Boolean(newProject.isVideo)
-    };
-
-    setEditableProjects([...editableProjects, projectToAdd]);
-    
-    // Reset form
-    setNewProject({
-      title: '',
-      category: '',
-      description: '',
-      image: '',
-      client: '',
-      date: '',
-      services: [],
-      featured: false,
-      videoUrl: '',
-      isVideo: false
-    });
   };
 
   const handleNewProjectChange = (field: keyof Project, value: any) => {
@@ -195,7 +160,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
               <X size={24} />
             </button>
           </div>
-          
+
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
               <label className="block text-gray-300 mb-2">Password</label>
@@ -246,7 +211,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
             </button>
           </div>
         </div>
-        
+
         <div className="flex border-b border-gray-800 mb-4">
           <button
             className={`px-4 py-2 ${activeTab === 'projects' ? 'text-red-500 border-b-2 border-red-500' : 'text-gray-400'}`}
@@ -267,12 +232,12 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
             Add New Project
           </button>
         </div>
-        
+
         <div className="overflow-y-auto flex-grow">
           {activeTab === 'projects' && (
             <div className="space-y-6">
               <h3 className="text-xl font-semibold mb-4">Manage Projects</h3>
-              
+
               {editableProjects.map((project, index) => (
                 <div key={project.id} className="border border-gray-800 rounded-lg p-4 mb-4">
                   <div className="flex justify-between mb-4">
@@ -284,7 +249,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                       <Trash size={18} />
                     </button>
                   </div>
-                  
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     <div>
                       <label className="block text-gray-400 mb-1">Title</label>
@@ -295,7 +260,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                         className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2"
                       />
                     </div>
-                    
+
                     <div>
                       <label className="block text-gray-400 mb-1">Category</label>
                       <input
@@ -305,7 +270,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                         className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2"
                       />
                     </div>
-                    
+
                     <div>
                       <label className="block text-gray-400 mb-1">Image URL</label>
                       <input
@@ -315,7 +280,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                         className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2"
                       />
                     </div>
-                    
+
                     <div>
                       <label className="block text-gray-400 mb-1">Client</label>
                       <input
@@ -325,7 +290,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                         className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2"
                       />
                     </div>
-                    
+
                     <div>
                       <label className="block text-gray-400 mb-1">Date</label>
                       <input
@@ -335,7 +300,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                         className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2"
                       />
                     </div>
-                    
+
                     <div>
                       <label className="block text-gray-400 mb-1">Services (comma separated)</label>
                       <input
@@ -345,7 +310,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                         className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2"
                       />
                     </div>
-                    
+
                     <div>
                       <label className="block text-gray-400 mb-1">Video URL (if applicable)</label>
                       <input
@@ -355,7 +320,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                         className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2"
                       />
                     </div>
-                    
+
                     <div className="flex space-x-4">
                       <div>
                         <label className="block text-gray-400 mb-1">Featured</label>
@@ -368,7 +333,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                           <option value="false">No</option>
                         </select>
                       </div>
-                      
+
                       <div>
                         <label className="block text-gray-400 mb-1">Is Video</label>
                         <select
@@ -382,7 +347,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                       </div>
                     </div>
                   </div>
-                  
+
                   <div>
                     <label className="block text-gray-400 mb-1">Description</label>
                     <textarea
@@ -392,7 +357,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                       rows={3}
                     ></textarea>
                   </div>
-                  
+
                   <div className="mt-4">
                     {project.image && (
                       <div className="mt-2">
@@ -409,11 +374,11 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
               ))}
             </div>
           )}
-          
+
           {activeTab === 'add-project' && (
             <div className="space-y-6">
               <h3 className="text-xl font-semibold mb-4">Add New Project</h3>
-              
+
               <div className="border border-gray-800 rounded-lg p-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                   <div>
@@ -426,7 +391,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                       required
                     />
                   </div>
-                  
+
                   <div>
                     <label className="block text-gray-400 mb-1">Category *</label>
                     <input
@@ -437,7 +402,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                       required
                     />
                   </div>
-                  
+
                   <div>
                     <label className="block text-gray-400 mb-1">Image URL *</label>
                     <input
@@ -448,7 +413,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                       required
                     />
                   </div>
-                  
+
                   <div>
                     <label className="block text-gray-400 mb-1">Client</label>
                     <input
@@ -458,7 +423,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                       className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2"
                     />
                   </div>
-                  
+
                   <div>
                     <label className="block text-gray-400 mb-1">Date</label>
                     <input
@@ -468,7 +433,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                       className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2"
                     />
                   </div>
-                  
+
                   <div>
                     <label className="block text-gray-400 mb-1">Services (comma separated)</label>
                     <input
@@ -478,7 +443,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                       className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2"
                     />
                   </div>
-                  
+
                   <div>
                     <label className="block text-gray-400 mb-1">Video URL (if applicable)</label>
                     <input
@@ -488,7 +453,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                       className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2"
                     />
                   </div>
-                  
+
                   <div className="flex space-x-4">
                     <div>
                       <label className="block text-gray-400 mb-1">Featured</label>
@@ -501,7 +466,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                         <option value="false">No</option>
                       </select>
                     </div>
-                    
+
                     <div>
                       <label className="block text-gray-400 mb-1">Is Video</label>
                       <select
@@ -515,7 +480,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                     </div>
                   </div>
                 </div>
-                
+
                 <div>
                   <label className="block text-gray-400 mb-1">Description</label>
                   <textarea
@@ -525,7 +490,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                     rows={3}
                   ></textarea>
                 </div>
-                
+
                 <div className="mt-4">
                   {newProject.image && (
                     <div className="mt-2">
@@ -540,7 +505,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                     </div>
                   )}
                 </div>
-                
+
                 <button
                   onClick={handleAddProject}
                   className="mt-4 flex items-center space-x-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
@@ -551,14 +516,14 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
               </div>
             </div>
           )}
-          
+
           {activeTab === 'settings' && (
             <div className="space-y-6">
               <h3 className="text-xl font-semibold mb-4">Admin Settings</h3>
-              
+
               <div className="border border-gray-800 rounded-lg p-4">
                 <p className="text-gray-300 mb-4">You can change admin-related settings here:</p>
-                
+
                 <div className="space-y-4">
                   <div>
                     <label className="block text-gray-400 mb-1">Admin Password</label>
@@ -582,7 +547,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                       In a real application, you would have a secure way to change passwords.
                     </p>
                   </div>
-                  
+
                   <div>
                     <h4 className="font-semibold mb-2">Tips for managing your portfolio:</h4>
                     <ul className="list-disc list-inside text-gray-400 space-y-1">
