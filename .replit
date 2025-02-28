@@ -1,0 +1,19 @@
+modules = ["nodejs-20", "web"]
+run = "npm run dev"
+
+[nix]
+channel = "stable-24_05"
+
+[deployment]
+run = ["sh", "-c", "npm run dev"]
+
+[workflows]
+runButton = "Run"
+
+[[workflows.workflow]]
+name = "Run"
+author = 39791777
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm run dev"
