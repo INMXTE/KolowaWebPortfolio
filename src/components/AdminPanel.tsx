@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { X, Save, Plus, Trash, Lock } from 'lucide-react';
+import { X, Save, Plus, Trash, Eye, EyeOff } from 'lucide-react';
 
 interface Project {
   id: number;
@@ -34,10 +34,25 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
   const [password, setPassword] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const correctPassword = 'kolowa2025';
+  const [showPassword, setShowPassword] = useState(false);
+  const [newProject, setNewProject] = useState<Partial<Project>>({
+    title: '',
+    category: '',
+    description: '',
+    image: '',
+    client: '',
+    date: '',
+    services: [],
+    featured: false,
+    videoUrl: '',
+    isVideo: false
+  });
 
   useEffect(() => {
     setEditableProjects([...projects]);
   }, [projects]);
+
+  if (!isOpen) return null;
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -65,65 +80,104 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
     setEditableProjects(updatedProjects);
   };
 
-  const handleAddProject = () => {
-    const newProject: Project = {
-      id: Math.max(...editableProjects.map(p => p.id)) + 1,
-      title: 'New Project',
-      category: 'Category',
-      description: 'Project description goes here',
-      image: 'https://images.unsplash.com/photo-1560421683-6856ea585c78?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
-      client: 'Client Name',
-      date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long' }),
-      services: ['Service 1', 'Service 2'],
-      featured: false,
-      videoUrl: '',
-      isVideo: false
-    };
-    
-    setEditableProjects([...editableProjects, newProject]);
-  };
-
-  const handleDeleteProject = (id: number) => {
+  const handleDeleteProject = (index: number) => {
     if (window.confirm('Are you sure you want to delete this project?')) {
-      setEditableProjects(editableProjects.filter(project => project.id !== id));
+      const updatedProjects = [...editableProjects];
+      updatedProjects.splice(index, 1);
+      setEditableProjects(updatedProjects);
     }
   };
 
   const handleSaveChanges = () => {
     onUpdateProjects(editableProjects);
-    alert('Changes saved successfully! Refresh the page to see updated content.');
+    alert('Changes saved successfully!');
   };
 
-  if (!isOpen) return null;
+  const handleAddProject = () => {
+    if (!newProject.title || !newProject.category || !newProject.image) {
+      alert('Title, category, and image are required!');
+      return;
+    }
 
+    const newId = Math.max(...editableProjects.map(p => p.id), 0) + 1;
+    
+    const projectToAdd: Project = {
+      id: newId,
+      title: newProject.title || '',
+      category: newProject.category || '',
+      description: newProject.description || '',
+      image: newProject.image || '',
+      client: newProject.client || '',
+      date: newProject.date || '',
+      services: typeof newProject.services === 'string' 
+        ? (newProject.services as string).split(',').map(s => s.trim())
+        : (newProject.services as string[] || []),
+      featured: Boolean(newProject.featured),
+      videoUrl: newProject.videoUrl || '',
+      isVideo: Boolean(newProject.isVideo)
+    };
+
+    setEditableProjects([...editableProjects, projectToAdd]);
+    
+    // Reset form
+    setNewProject({
+      title: '',
+      category: '',
+      description: '',
+      image: '',
+      client: '',
+      date: '',
+      services: [],
+      featured: false,
+      videoUrl: '',
+      isVideo: false
+    });
+  };
+
+  const handleNewProjectChange = (field: keyof Project, value: any) => {
+    setNewProject({
+      ...newProject,
+      [field]: field === 'services' 
+        ? value.split(',').map((service: string) => service.trim()) 
+        : value
+    });
+  };
+
+  // If not authenticated, show login form
   if (!isAuthenticated) {
     return (
       <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4">
-        <div className="bg-[#0a0a0a] rounded-lg p-8 max-w-md w-full">
+        <div className="bg-[#0a0a0a] rounded-lg p-6 max-w-md w-full">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold">KOLOWA Admin</h2>
+            <h2 className="text-2xl font-bold">Admin Login</h2>
             <button onClick={onClose} className="text-gray-400 hover:text-white">
               <X size={24} />
             </button>
           </div>
           
           <form onSubmit={handleLogin} className="space-y-4">
-            <div className="flex items-center space-x-2 mb-6">
-              <Lock size={20} className="text-red-500" />
-              <p className="text-gray-300">Enter administrator password</p>
+            <div>
+              <label className="block text-gray-300 mb-2">Password</label>
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full bg-gray-900 border border-gray-700 rounded px-4 py-2 text-white"
+                  required
+                />
+                <button 
+                  type="button"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
             </div>
-            
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-gray-800 border border-gray-700 rounded p-2 text-white"
-              placeholder="Password"
-            />
-            
-            <button
-              type="submit"
-              className="w-full bg-red-500 text-white py-2 rounded hover:bg-red-600 transition-colors"
+            <button 
+              type="submit" 
+              className="w-full bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors"
             >
               Login
             </button>
@@ -165,169 +219,340 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
           >
             Settings
           </button>
+          <button
+            className={`px-4 py-2 ${activeTab === 'add-project' ? 'text-red-500 border-b-2 border-red-500' : 'text-gray-400'}`}
+            onClick={() => setActiveTab('add-project')}
+          >
+            Add New Project
+          </button>
         </div>
         
         <div className="overflow-y-auto flex-grow">
           {activeTab === 'projects' && (
             <div className="space-y-6">
-              <div className="flex justify-between items-center">
-                <h3 className="text-xl font-bold">Manage Projects</h3>
-                <button 
-                  onClick={handleAddProject}
-                  className="flex items-center space-x-2 bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition-colors"
-                >
-                  <Plus size={16} />
-                  <span>Add Project</span>
-                </button>
-              </div>
+              <h3 className="text-xl font-semibold mb-4">Manage Projects</h3>
               
-              <div className="grid grid-cols-1 gap-6">
-                {editableProjects.map((project, index) => (
-                  <div key={project.id} className="border border-gray-800 rounded-lg p-4 bg-gray-900">
-                    <div className="flex justify-between mb-4">
-                      <h4 className="text-lg font-bold">{project.title}</h4>
-                      <button 
-                        onClick={() => handleDeleteProject(project.id)}
-                        className="text-red-500 hover:text-red-600"
-                      >
-                        <Trash size={18} />
-                      </button>
+              {editableProjects.map((project, index) => (
+                <div key={project.id} className="border border-gray-800 rounded-lg p-4 mb-4">
+                  <div className="flex justify-between mb-4">
+                    <h4 className="text-lg font-bold">{project.title}</h4>
+                    <button 
+                      onClick={() => handleDeleteProject(index)}
+                      className="text-red-500 hover:text-red-400"
+                    >
+                      <Trash size={18} />
+                    </button>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                      <label className="block text-gray-400 mb-1">Title</label>
+                      <input
+                        type="text"
+                        value={project.title}
+                        onChange={(e) => handleUpdateProject(index, 'title', e.target.value)}
+                        className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2"
+                      />
                     </div>
                     
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-gray-400 mb-1">Category</label>
+                      <input
+                        type="text"
+                        value={project.category}
+                        onChange={(e) => handleUpdateProject(index, 'category', e.target.value)}
+                        className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-gray-400 mb-1">Image URL</label>
+                      <input
+                        type="text"
+                        value={project.image}
+                        onChange={(e) => handleUpdateProject(index, 'image', e.target.value)}
+                        className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-gray-400 mb-1">Client</label>
+                      <input
+                        type="text"
+                        value={project.client}
+                        onChange={(e) => handleUpdateProject(index, 'client', e.target.value)}
+                        className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-gray-400 mb-1">Date</label>
+                      <input
+                        type="text"
+                        value={project.date}
+                        onChange={(e) => handleUpdateProject(index, 'date', e.target.value)}
+                        className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-gray-400 mb-1">Services (comma separated)</label>
+                      <input
+                        type="text"
+                        value={project.services.join(', ')}
+                        onChange={(e) => handleUpdateProject(index, 'services', e.target.value)}
+                        className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-gray-400 mb-1">Video URL (if applicable)</label>
+                      <input
+                        type="text"
+                        value={project.videoUrl || ''}
+                        onChange={(e) => handleUpdateProject(index, 'videoUrl', e.target.value)}
+                        className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2"
+                      />
+                    </div>
+                    
+                    <div className="flex space-x-4">
                       <div>
-                        <label className="block text-sm text-gray-400 mb-1">Title</label>
-                        <input
-                          type="text"
-                          value={project.title}
-                          onChange={(e) => handleUpdateProject(index, 'title', e.target.value)}
-                          className="w-full bg-gray-800 border border-gray-700 rounded p-2 text-white"
-                        />
+                        <label className="block text-gray-400 mb-1">Featured</label>
+                        <select
+                          value={project.featured ? 'true' : 'false'}
+                          onChange={(e) => handleUpdateProject(index, 'featured', e.target.value)}
+                          className="bg-gray-900 border border-gray-700 rounded px-3 py-2"
+                        >
+                          <option value="true">Yes</option>
+                          <option value="false">No</option>
+                        </select>
                       </div>
                       
                       <div>
-                        <label className="block text-sm text-gray-400 mb-1">Category</label>
-                        <input
-                          type="text"
-                          value={project.category}
-                          onChange={(e) => handleUpdateProject(index, 'category', e.target.value)}
-                          className="w-full bg-gray-800 border border-gray-700 rounded p-2 text-white"
-                        />
-                      </div>
-                      
-                      <div className="md:col-span-2">
-                        <label className="block text-sm text-gray-400 mb-1">Description</label>
-                        <textarea
-                          value={project.description}
-                          onChange={(e) => handleUpdateProject(index, 'description', e.target.value)}
-                          rows={3}
-                          className="w-full bg-gray-800 border border-gray-700 rounded p-2 text-white"
-                        ></textarea>
-                      </div>
-                      
-                      <div>
-                        <label className="block text-sm text-gray-400 mb-1">Image URL</label>
-                        <input
-                          type="text"
-                          value={project.image}
-                          onChange={(e) => handleUpdateProject(index, 'image', e.target.value)}
-                          className="w-full bg-gray-800 border border-gray-700 rounded p-2 text-white"
-                        />
-                      </div>
-                      
-                      <div>
-                        <label className="block text-sm text-gray-400 mb-1">Client</label>
-                        <input
-                          type="text"
-                          value={project.client}
-                          onChange={(e) => handleUpdateProject(index, 'client', e.target.value)}
-                          className="w-full bg-gray-800 border border-gray-700 rounded p-2 text-white"
-                        />
-                      </div>
-                      
-                      <div>
-                        <label className="block text-sm text-gray-400 mb-1">Date</label>
-                        <input
-                          type="text"
-                          value={project.date}
-                          onChange={(e) => handleUpdateProject(index, 'date', e.target.value)}
-                          className="w-full bg-gray-800 border border-gray-700 rounded p-2 text-white"
-                        />
-                      </div>
-                      
-                      <div>
-                        <label className="block text-sm text-gray-400 mb-1">Services (comma separated)</label>
-                        <input
-                          type="text"
-                          value={project.services.join(', ')}
-                          onChange={(e) => handleUpdateProject(index, 'services', e.target.value)}
-                          className="w-full bg-gray-800 border border-gray-700 rounded p-2 text-white"
-                        />
-                      </div>
-                      
-                      <div className="flex space-x-4">
-                        <div>
-                          <label className="block text-sm text-gray-400 mb-1">Featured</label>
-                          <select
-                            value={project.featured.toString()}
-                            onChange={(e) => handleUpdateProject(index, 'featured', e.target.value)}
-                            className="bg-gray-800 border border-gray-700 rounded p-2 text-white"
-                          >
-                            <option value="true">Yes</option>
-                            <option value="false">No</option>
-                          </select>
-                        </div>
-                        
-                        <div>
-                          <label className="block text-sm text-gray-400 mb-1">Is Video</label>
-                          <select
-                            value={project.isVideo?.toString() || "false"}
-                            onChange={(e) => handleUpdateProject(index, 'isVideo', e.target.value)}
-                            className="bg-gray-800 border border-gray-700 rounded p-2 text-white"
-                          >
-                            <option value="true">Yes</option>
-                            <option value="false">No</option>
-                          </select>
-                        </div>
-                      </div>
-                      
-                      <div className="md:col-span-2">
-                        <label className="block text-sm text-gray-400 mb-1">YouTube Video URL (embed format)</label>
-                        <input
-                          type="text"
-                          value={project.videoUrl || ''}
-                          onChange={(e) => handleUpdateProject(index, 'videoUrl', e.target.value)}
-                          className="w-full bg-gray-800 border border-gray-700 rounded p-2 text-white"
-                          placeholder="https://www.youtube.com/embed/VIDEO_ID"
-                        />
+                        <label className="block text-gray-400 mb-1">Is Video</label>
+                        <select
+                          value={project.isVideo ? 'true' : 'false'}
+                          onChange={(e) => handleUpdateProject(index, 'isVideo', e.target.value)}
+                          className="bg-gray-900 border border-gray-700 rounded px-3 py-2"
+                        >
+                          <option value="true">Yes</option>
+                          <option value="false">No</option>
+                        </select>
                       </div>
                     </div>
                   </div>
-                ))}
+                  
+                  <div>
+                    <label className="block text-gray-400 mb-1">Description</label>
+                    <textarea
+                      value={project.description}
+                      onChange={(e) => handleUpdateProject(index, 'description', e.target.value)}
+                      className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2"
+                      rows={3}
+                    ></textarea>
+                  </div>
+                  
+                  <div className="mt-4">
+                    {project.image && (
+                      <div className="mt-2">
+                        <p className="text-gray-400 mb-1">Image Preview:</p>
+                        <img 
+                          src={project.image} 
+                          alt={project.title} 
+                          className="h-20 w-auto object-cover rounded"
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+          
+          {activeTab === 'add-project' && (
+            <div className="space-y-6">
+              <h3 className="text-xl font-semibold mb-4">Add New Project</h3>
+              
+              <div className="border border-gray-800 rounded-lg p-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <label className="block text-gray-400 mb-1">Title *</label>
+                    <input
+                      type="text"
+                      value={newProject.title || ''}
+                      onChange={(e) => handleNewProjectChange('title', e.target.value)}
+                      className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2"
+                      required
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-gray-400 mb-1">Category *</label>
+                    <input
+                      type="text"
+                      value={newProject.category || ''}
+                      onChange={(e) => handleNewProjectChange('category', e.target.value)}
+                      className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2"
+                      required
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-gray-400 mb-1">Image URL *</label>
+                    <input
+                      type="text"
+                      value={newProject.image || ''}
+                      onChange={(e) => handleNewProjectChange('image', e.target.value)}
+                      className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2"
+                      required
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-gray-400 mb-1">Client</label>
+                    <input
+                      type="text"
+                      value={newProject.client || ''}
+                      onChange={(e) => handleNewProjectChange('client', e.target.value)}
+                      className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-gray-400 mb-1">Date</label>
+                    <input
+                      type="text"
+                      value={newProject.date || ''}
+                      onChange={(e) => handleNewProjectChange('date', e.target.value)}
+                      className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-gray-400 mb-1">Services (comma separated)</label>
+                    <input
+                      type="text"
+                      value={Array.isArray(newProject.services) ? newProject.services.join(', ') : ''}
+                      onChange={(e) => handleNewProjectChange('services', e.target.value)}
+                      className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-gray-400 mb-1">Video URL (if applicable)</label>
+                    <input
+                      type="text"
+                      value={newProject.videoUrl || ''}
+                      onChange={(e) => handleNewProjectChange('videoUrl', e.target.value)}
+                      className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2"
+                    />
+                  </div>
+                  
+                  <div className="flex space-x-4">
+                    <div>
+                      <label className="block text-gray-400 mb-1">Featured</label>
+                      <select
+                        value={newProject.featured ? 'true' : 'false'}
+                        onChange={(e) => setNewProject({...newProject, featured: e.target.value === 'true'})}
+                        className="bg-gray-900 border border-gray-700 rounded px-3 py-2"
+                      >
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                      </select>
+                    </div>
+                    
+                    <div>
+                      <label className="block text-gray-400 mb-1">Is Video</label>
+                      <select
+                        value={newProject.isVideo ? 'true' : 'false'}
+                        onChange={(e) => setNewProject({...newProject, isVideo: e.target.value === 'true'})}
+                        className="bg-gray-900 border border-gray-700 rounded px-3 py-2"
+                      >
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                
+                <div>
+                  <label className="block text-gray-400 mb-1">Description</label>
+                  <textarea
+                    value={newProject.description || ''}
+                    onChange={(e) => handleNewProjectChange('description', e.target.value)}
+                    className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2"
+                    rows={3}
+                  ></textarea>
+                </div>
+                
+                <div className="mt-4">
+                  {newProject.image && (
+                    <div className="mt-2">
+                      <p className="text-gray-400 mb-1">Image Preview:</p>
+                      <img 
+                        src={newProject.image as string} 
+                        alt="Preview" 
+                        className="h-20 w-auto object-cover rounded"
+                        onError={(e) => (e.target as HTMLImageElement).style.display = 'none'}
+                        onLoad={(e) => (e.target as HTMLImageElement).style.display = 'block'}
+                      />
+                    </div>
+                  )}
+                </div>
+                
+                <button
+                  onClick={handleAddProject}
+                  className="mt-4 flex items-center space-x-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
+                >
+                  <Plus size={18} />
+                  <span>Add Project</span>
+                </button>
               </div>
             </div>
           )}
           
           {activeTab === 'settings' && (
-            <div className="p-4">
-              <h3 className="text-xl font-bold mb-4">Website Settings</h3>
-              <p className="text-gray-400 mb-4">More setting options coming soon.</p>
+            <div className="space-y-6">
+              <h3 className="text-xl font-semibold mb-4">Admin Settings</h3>
               
-              <div className="border border-gray-800 rounded-lg p-4 bg-gray-900">
-                <h4 className="font-bold mb-2">Admin Password</h4>
-                <p className="text-sm text-gray-400 mb-4">Current password: kolowa2025</p>
-                <div className="flex items-center space-x-2">
-                  <input
-                    type="password"
-                    placeholder="New Password"
-                    className="bg-gray-800 border border-gray-700 rounded p-2 text-white"
-                    disabled
-                  />
-                  <button className="bg-gray-700 text-white px-3 py-2 rounded opacity-50 cursor-not-allowed">
-                    Change Password
-                  </button>
+              <div className="border border-gray-800 rounded-lg p-4">
+                <p className="text-gray-300 mb-4">You can change admin-related settings here:</p>
+                
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-gray-400 mb-1">Admin Password</label>
+                    <div className="relative">
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        value={correctPassword}
+                        readOnly
+                        className="w-full bg-gray-900 border border-gray-700 rounded px-4 py-2 text-white"
+                      />
+                      <button 
+                        type="button"
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                      </button>
+                    </div>
+                    <p className="text-gray-500 text-sm mt-1">
+                      Note: To change the password, modify it in the App.tsx file (for demonstration purposes).
+                      In a real application, you would have a secure way to change passwords.
+                    </p>
+                  </div>
+                  
+                  <div>
+                    <h4 className="font-semibold mb-2">Tips for managing your portfolio:</h4>
+                    <ul className="list-disc list-inside text-gray-400 space-y-1">
+                      <li>Keep project descriptions concise and informative</li>
+                      <li>Use high-quality images for better visual appeal</li>
+                      <li>Mark your best work as "Featured" to highlight them</li>
+                      <li>Include video URLs for dynamic content (YouTube embed URLs work best)</li>
+                      <li>Regularly update your portfolio with new projects</li>
+                    </ul>
+                  </div>
                 </div>
-                <p className="text-sm text-gray-500 mt-2">Password management will be available in future updates</p>
               </div>
             </div>
           )}
