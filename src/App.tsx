@@ -27,6 +27,7 @@ function App() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(false);
+  const [projectsData, setProjectsData] = useState<Project[]>(projects);
 
   const handleAdminAccess = () => {
     const password = prompt("Enter admin password:");
@@ -38,8 +39,8 @@ function App() {
   };
 
   const handleUpdateProjects = (updatedProjects: Project[]) => {
-    // In a real application, this would update a database
-    // For now, we'll just log the updated projects to console
+    // Update the projects state to reflect changes
+    setProjectsData(updatedProjects);
     console.log("Projects updated:", updatedProjects);
   };
 
@@ -54,8 +55,8 @@ function App() {
   // Admin password
   const adminPassword = "KOLOWA2025"; // Password is: KOLOWA2025
   
-  // Portfolio projects data
-  const projects: Project[] = [
+  // Initial portfolio projects data
+  const initialProjects: Project[] = [
     {
       id: 1,
       title: "Mekatili wa menza",
@@ -246,8 +247,8 @@ function App() {
     form.reset();
   };
 
-  const featuredProjects = projects.filter((project) => project.featured);
-  const moreProjects = projects.filter((project) => !project.featured);
+  const featuredProjects = projectsData.filter((project) => project.featured);
+  const moreProjects = projectsData.filter((project) => !project.featured);
 
   return (
     <div className="relative bg-black text-white min-h-screen overflow-x-hidden">
@@ -882,7 +883,7 @@ function App() {
       <AdminPanel
         isOpen={isAdminPanelOpen}
         onClose={() => setIsAdminPanelOpen(false)}
-        projects={projects}
+        projects={projectsData}
         onUpdateProjects={handleUpdateProjects}
       />
     </div>

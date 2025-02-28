@@ -98,6 +98,47 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
       alert('Title, category, and image are required!');
       return;
     }
+    
+    // Generate a new unique ID for the project
+    const newId = Math.max(...editableProjects.map(p => p.id), 0) + 1;
+    
+    // Create the new project with all required fields
+    const projectToAdd: Project = {
+      id: newId,
+      title: newProject.title || '',
+      category: newProject.category || '',
+      description: newProject.description || '',
+      image: newProject.image || '',
+      client: newProject.client || '',
+      date: newProject.date || '',
+      services: Array.isArray(newProject.services) ? newProject.services : 
+               (typeof newProject.services === 'string' ? 
+                newProject.services.split(',').map(service => service.trim()) : []),
+      featured: Boolean(newProject.featured),
+      videoUrl: newProject.videoUrl || '',
+      isVideo: Boolean(newProject.isVideo)
+    };
+    
+    // Add the new project to the list
+    const updatedProjects = [...editableProjects, projectToAdd];
+    setEditableProjects(updatedProjects);
+    
+    // Reset the form
+    setNewProject({
+      title: '',
+      category: '',
+      description: '',
+      image: '',
+      client: '',
+      date: '',
+      services: [],
+      featured: false,
+      videoUrl: '',
+      isVideo: false
+    });
+    
+    // Optional: Switch back to projects tab
+    setActiveTab('projects');
 
     const newId = Math.max(...editableProjects.map(p => p.id), 0) + 1;
     
