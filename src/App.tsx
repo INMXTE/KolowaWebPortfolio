@@ -334,10 +334,10 @@ function App() {
         </nav>
 
         <div className="flex items-center">
-          {/* Admin button */}
+          {/* Admin button - now visible on both mobile and desktop */}
           <button
             onClick={handleAdminAccess}
-            className="text-gray-400 hover:text-white mr-4 hidden md:block"
+            className="text-gray-400 hover:text-white mr-4"
             title="Admin Panel"
           >
             <Settings size={20} />
@@ -381,6 +381,12 @@ function App() {
             >
               Contact
             </button>
+            <button
+              onClick={handleAdminAccess}
+              className="text-2xl font-bold hover:text-red-500 transition-colors"
+            >
+              Admin
+            </button>
           </nav>
         </div>
       )}
@@ -393,7 +399,7 @@ function App() {
           className="min-h-screen flex flex-col justify-center items-center relative"
         >
           <div className="container mx-auto px-6 py-24 text-center">
-            <h1 className="text-7xl md:text-9xl font-bold mb-6 tracking-wider text-gradient">
+            <h1 className="text-6xl sm:text-7xl md:text-10xl font-bold mb-6 tracking-wider text-gradient">
               KOLOWA
             </h1>
             <p className="max-w-md mx-auto text-gray-300 mb-8 font-thin">
@@ -407,7 +413,7 @@ function App() {
               Explore Us
             </button>
           </div>
-          <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+          <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce flex justify-center">
             <ArrowDown size={24} />
           </div>
         </section>
