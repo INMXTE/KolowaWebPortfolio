@@ -27,33 +27,6 @@ function App() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(false);
-  const [projectsData, setProjectsData] = useState<Project[]>(projects);
-
-  const handleAdminAccess = () => {
-    const password = prompt("Enter admin password:");
-    if (password === adminPassword) {
-      setIsAdminPanelOpen(true);
-    } else if (password !== null) {
-      alert("Incorrect password");
-    }
-  };
-
-  const handleUpdateProjects = (updatedProjects: Project[]) => {
-    // Update the projects state to reflect changes
-    setProjectsData(updatedProjects);
-    console.log("Projects updated:", updatedProjects);
-  };
-
-  // Handle cursor movement for interactive background
-  const handleMouseMove = (e: React.MouseEvent) => {
-    setCursorPosition({ x: e.clientX, y: e.clientY });
-  };
-
-  // State for more projects visibility
-  const [showMoreProjects, setShowMoreProjects] = useState(false);
-  
-  // Admin password
-  const adminPassword = "KOLOWA2025"; // Password is: KOLOWA2025
   
   // Initial portfolio projects data
   const initialProjects: Project[] = [
@@ -163,6 +136,34 @@ function App() {
       isVideo: true,
     },
   ];
+  
+  const [projectsData, setProjectsData] = useState<Project[]>(initialProjects);
+
+  const handleAdminAccess = () => {
+    const password = prompt("Enter admin password:");
+    if (password === adminPassword) {
+      setIsAdminPanelOpen(true);
+    } else if (password !== null) {
+      alert("Incorrect password");
+    }
+  };
+
+  const handleUpdateProjects = (updatedProjects: Project[]) => {
+    // Update the projects state to reflect changes
+    setProjectsData(updatedProjects);
+    console.log("Projects updated:", updatedProjects);
+  };
+
+  // Handle cursor movement for interactive background
+  const handleMouseMove = (e: React.MouseEvent) => {
+    setCursorPosition({ x: e.clientX, y: e.clientY });
+  };
+
+  // State for more projects visibility
+  const [showMoreProjects, setShowMoreProjects] = useState(false);
+  
+  // Admin password
+  const adminPassword = "KOLOWA2025"; // Password is: KOLOWA2025
 
   useEffect(() => {
     const handleScroll = () => {
