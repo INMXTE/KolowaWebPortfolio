@@ -399,7 +399,7 @@ function App() {
           className="min-h-screen flex flex-col justify-center items-center relative"
         >
           <div className="container mx-auto px-6 py-24 text-center">
-            <h1 className="text-6xl sm:text-7xl md:text-10xl font-bold mb-6 tracking-wider text-gradient">
+            <h1 className="text-6xl sm:text-7xl md:text-[12rem] font-bold mb-6 tracking-wider text-gradient">
               KOLOWA
             </h1>
             <p className="max-w-md mx-auto text-gray-300 mb-8 font-thin">
