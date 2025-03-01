@@ -288,7 +288,7 @@ function App() {
       </div>
 
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex justify-between items-center backdrop-blur-sm bg-black/30">
+      <header className="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex justify-between items-center backdrop-blur-sm bg-black/30 ">
         <div className="flex items-center">
           <div className="px-5">
             {" "}
@@ -469,7 +469,10 @@ function App() {
         </section>
 
         {/* Portfolio Section */}
-        <section id="portfolio" className="min-h-screen flex items-center relative py-24">
+        <section
+          id="portfolio"
+          className="min-h-screen flex items-center relative py-24"
+        >
           <div className="container mx-auto px-6">
             <div className="flex flex-col md:flex-row items-center">
               <div className="md:w-1/3 mb-12 md:mb-0">
