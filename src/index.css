@@ -209,3 +209,56 @@ html {
 .shadow-glow {
   box-shadow: 0 0 20px rgba(255, 77, 77, 0.2);
 }
+
+/* Image Carousel Styles */
+.image-carousel-dots {
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.image-carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  margin: 0 4px;
+  transition: background-color 0.3s ease;
+}
+
+.image-carousel-dot.active {
+  background-color: white;
+}
+
+.image-carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease, opacity 0.3s ease;
+  opacity: 0;
+}
+
+.portfolio-card:hover .image-carousel-arrow {
+  opacity: 1;
+}
+
+.image-carousel-arrow:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.image-carousel-arrow.left {
+  left: 10px;
+}
+
+.image-carousel-arrow.right {
+  right: 10px;
+}

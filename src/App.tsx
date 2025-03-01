@@ -15,8 +15,11 @@ import {
   User,
   Tag,
   Settings,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import AdminPanel from "./components/AdminPanel";
+import ImageCarousel from "./components/ImageCarousel";
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -27,6 +30,7 @@ function App() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(false);
+  const [projectImageIndices, setProjectImageIndices] = useState<{[key: number]: number}>({});
 
   // Initial portfolio projects data
   const initialProjects: Project[] = [
@@ -38,6 +42,11 @@ function App() {
         "A powerful documentary showcasing indigenous cultural preservation through the eyes of local communities. This project explores the rich heritage and traditions that are at risk of being lost in the modern world.",
       image:
         "https://images.unsplash.com/photo-1516939884455-1445c8652f83?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+      images: [
+        "https://images.unsplash.com/photo-1516939884455-1445c8652f83?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        "https://images.unsplash.com/photo-1551966775-a4ddc8df052b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+      ],
       client: "National Heritage Foundation",
       date: "March 2024",
       services: ["Videography", "Editing", "Sound Design"],
@@ -53,6 +62,11 @@ function App() {
         "Complete brand identity design for MSINGI, an educational technology startup focused on providing accessible learning tools for underserved communities across East Africa.",
       image:
         "https://images.unsplash.com/photo-1531384441138-2736e62e0919?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      images: [
+        "https://images.unsplash.com/photo-1531384441138-2736e62e0919?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1583845112203-29329902332e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1574027542338-96c0e3f158dc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      ],
       client: "MSINGI EdTech",
       date: "January 2024",
       services: ["Logo Design", "Brand Guidelines", "Marketing Materials"],
@@ -68,6 +82,11 @@ function App() {
         "An animated short film celebrating African folklore and storytelling traditions. HEKAYA brings ancient tales to life through vibrant animation and authentic voice acting.",
       image:
         "https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      images: [
+        "https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1561211919-1947abbbb35b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1550747545-c896b5f89ff7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      ],
       client: "Storytellers Collective",
       date: "November 2023",
       services: ["Character Design", "Animation", "Storyboarding"],
@@ -83,6 +102,11 @@ function App() {
         "A comprehensive website redesign for Bahari Blue, a marine conservation organization working to protect coral reefs along the East African coastline.",
       image:
         "https://images.unsplash.com/photo-1582750433449-648ed127bb54?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+      images: [
+        "https://images.unsplash.com/photo-1582750433449-648ed127bb54?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        "https://images.unsplash.com/photo-1556388158-158ea5ccacbd?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        "https://images.unsplash.com/photo-1583212292454-1fe6229603b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+      ],
       client: "Bahari Blue Conservation",
       date: "February 2024",
       services: ["UI/UX Design", "Web Development", "Content Strategy"],
@@ -98,6 +122,11 @@ function App() {
         "Complete event branding and promotional materials for Nyota Festival, an annual music and arts celebration showcasing emerging talent from across the continent.",
       image:
         "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+      images: [
+        "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        "https://images.unsplash.com/photo-1506157786151-b8491531f063?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+      ],
       client: "Nyota Arts Foundation",
       date: "April 2024",
       services: ["Event Branding", "Motion Graphics", "Print Design"],
@@ -113,6 +142,11 @@ function App() {
         "Product design and packaging for Jasiri, a sustainable fashion brand creating contemporary clothing inspired by traditional African textiles and techniques.",
       image:
         "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+      images: [
+        "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        "https://images.unsplash.com/photo-1554412933-514a83d2f3c8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+      ],
       client: "Jasiri Apparel",
       date: "December 2023",
       services: ["Product Design", "Packaging", "Brand Strategy"],
@@ -128,6 +162,11 @@ function App() {
         "A captivating short film capturing the breathtaking beauty of African landscapes and wildlife through stunning cinematography and emotive storytelling.",
       image:
         "https://images.unsplash.com/photo-1516426122078-c23e76319801?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      images: [
+        "https://images.unsplash.com/photo-1516426122078-c23e76319801?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1517690623533-ca77a9a4b402?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1505118380757-91f5f5632de0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      ],
       client: "Wildlife Foundation",
       date: "May 2024",
       services: ["Cinematography", "Direction", "Color Grading"],
@@ -217,11 +256,39 @@ function App() {
     setSelectedProject(project);
     setShowPortfolioModal(true);
     document.body.style.overflow = "hidden";
+    
+    // Initialize the image index for this project if not already set
+    if (!projectImageIndices[project.id]) {
+      setProjectImageIndices(prev => ({
+        ...prev,
+        [project.id]: 0
+      }));
+    }
   };
 
   const closeProjectModal = () => {
     setShowPortfolioModal(false);
     document.body.style.overflow = "auto";
+  };
+  
+  const navigateProjectImage = (projectId: number, direction: 'prev' | 'next') => {
+    const project = projectsData.find(p => p.id === projectId);
+    if (!project || !project.images || project.images.length <= 1) return;
+    
+    const imageCount = project.images.length;
+    const currentIndex = projectImageIndices[projectId] || 0;
+    
+    let newIndex;
+    if (direction === 'prev') {
+      newIndex = (currentIndex - 1 + imageCount) % imageCount;
+    } else {
+      newIndex = (currentIndex + 1) % imageCount;
+    }
+    
+    setProjectImageIndices(prev => ({
+      ...prev,
+      [projectId]: newIndex
+    }));
   };
 
   const handleEmailClick = () => {
@@ -489,10 +556,13 @@ function App() {
                     className="relative rounded-lg overflow-hidden group h-96 cursor-pointer portfolio-card md:col-span-1"
                     onClick={() => openProjectModal(featuredProjects[0])}
                   >
-                    <img
-                      src={featuredProjects[0].image}
-                      alt={featuredProjects[0].title}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    <ImageCarousel
+                      images={featuredProjects[0].images || [featuredProjects[0].image]}
+                      currentIndex={projectImageIndices[featuredProjects[0].id] || 0}
+                      onPrevious={() => navigateProjectImage(featuredProjects[0].id, 'prev')}
+                      onNext={() => navigateProjectImage(featuredProjects[0].id, 'next')}
+                      isVideo={featuredProjects[0].isVideo}
+                      videoUrl={featuredProjects[0].isVideo ? featuredProjects[0].videoUrl : undefined}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
                     <div className="absolute bottom-0 left-0 p-6">
@@ -511,10 +581,11 @@ function App() {
                       className="relative rounded-lg overflow-hidden group cursor-pointer portfolio-card"
                       onClick={() => openProjectModal(featuredProjects[1])}
                     >
-                      <img
-                        src={featuredProjects[1].image}
-                        alt={featuredProjects[1].title}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      <ImageCarousel
+                        images={featuredProjects[1].images || [featuredProjects[1].image]}
+                        currentIndex={projectImageIndices[featuredProjects[1].id] || 0}
+                        onPrevious={() => navigateProjectImage(featuredProjects[1].id, 'prev')}
+                        onNext={() => navigateProjectImage(featuredProjects[1].id, 'next')}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
                       <div className="absolute bottom-0 left-0 p-4">
@@ -528,10 +599,13 @@ function App() {
                       className="relative rounded-lg overflow-hidden group cursor-pointer portfolio-card"
                       onClick={() => openProjectModal(featuredProjects[2])}
                     >
-                      <img
-                        src={featuredProjects[2].image}
-                        alt={featuredProjects[2].title}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      <ImageCarousel
+                        images={featuredProjects[2].images || [featuredProjects[2].image]}
+                        currentIndex={projectImageIndices[featuredProjects[2].id] || 0}
+                        onPrevious={() => navigateProjectImage(featuredProjects[2].id, 'prev')}
+                        onNext={() => navigateProjectImage(featuredProjects[2].id, 'next')}
+                        isVideo={featuredProjects[2].isVideo}
+                        videoUrl={featuredProjects[2].isVideo ? featuredProjects[2].videoUrl : undefined}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
                       <div className="absolute bottom-0 left-0 p-4">
@@ -588,10 +662,13 @@ function App() {
                   className="relative rounded-lg overflow-hidden group h-80 cursor-pointer portfolio-card"
                   onClick={() => openProjectModal(project)}
                 >
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  <ImageCarousel
+                    images={project.images || [project.image]}
+                    currentIndex={projectImageIndices[project.id] || 0}
+                    onPrevious={() => navigateProjectImage(project.id, 'prev')}
+                    onNext={() => navigateProjectImage(project.id, 'next')}
+                    isVideo={project.isVideo}
+                    videoUrl={project.isVideo ? project.videoUrl : undefined}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
 
@@ -792,26 +869,16 @@ function App() {
             </button>
 
             <div className="h-80 relative">
-              {selectedProject.isVideo && selectedProject.videoUrl ? (
-                <div className="w-full h-full">
-                  <iframe
-                    src={selectedProject.videoUrl}
-                    title={selectedProject.title}
-                    className="w-full h-full"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  ></iframe>
-                </div>
-              ) : (
-                <>
-                  <img
-                    src={selectedProject.image}
-                    alt={selectedProject.title}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] to-transparent"></div>
-                </>
+              <ImageCarousel
+                images={selectedProject.images || [selectedProject.image]}
+                currentIndex={projectImageIndices[selectedProject.id] || 0}
+                onPrevious={() => navigateProjectImage(selectedProject.id, 'prev')}
+                onNext={() => navigateProjectImage(selectedProject.id, 'next')}
+                isVideo={selectedProject.isVideo}
+                videoUrl={selectedProject.isVideo ? selectedProject.videoUrl : undefined}
+              />
+              {!selectedProject.isVideo && (
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] to-transparent opacity-30"></div>
               )}
             </div>
 
@@ -901,6 +968,7 @@ interface Project {
   category: string;
   description: string;
   image: string;
+  images?: string[];
   client: string;
   date: string;
   services: string[];
