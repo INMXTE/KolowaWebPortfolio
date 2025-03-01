@@ -469,92 +469,101 @@ function App() {
         </section>
 
         {/* Portfolio Section */}
-        <section id="portfolio" className="min-h-screen py-24">
+        <section id="portfolio" className="min-h-screen flex items-center relative py-24">
           <div className="container mx-auto px-6">
-            <h3 className="text-4xl font-bold mb-12 text-center">Portfolio</h3>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              {/* Project 1 */}
-              <div
-                className="relative rounded-lg overflow-hidden group h-96 cursor-pointer portfolio-card"
-                onClick={() => openProjectModal(featuredProjects[0])}
-              >
-                <img
-                  src={featuredProjects[0].image}
-                  alt={featuredProjects[0].title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
-                <div className="absolute bottom-0 left-0 p-6">
-                  <h4 className="text-2xl font-bold mb-2">
-                    {featuredProjects[0].title}
-                  </h4>
-                  <p className="text-sm text-gray-300">
-                    {featuredProjects[0].description.substring(0, 80)}...
-                  </p>
-                </div>
+            <div className="flex flex-col md:flex-row items-center">
+              <div className="md:w-1/3 mb-12 md:mb-0">
+                <h2 className="text-9xl font-bold text-red-500 opacity-80 text-gradient">
+                  02
+                </h2>
               </div>
+              <div className="md:w-2/3">
+                <h3 className="text-4xl font-bold mb-8">Portfolio</h3>
 
-              {/* Project 2 & 3 */}
-              <div className="grid grid-rows-2 gap-6 h-96">
-                <div
-                  className="relative rounded-lg overflow-hidden group cursor-pointer portfolio-card"
-                  onClick={() => openProjectModal(featuredProjects[1])}
-                >
-                  <img
-                    src={featuredProjects[1].image}
-                    alt={featuredProjects[1].title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
-                  <div className="absolute bottom-0 left-0 p-4">
-                    <h4 className="text-xl font-bold">
-                      {featuredProjects[1].title}
-                    </h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                  {/* Project 1 (Larger) */}
+                  <div
+                    className="relative rounded-lg overflow-hidden group h-96 cursor-pointer portfolio-card md:col-span-1"
+                    onClick={() => openProjectModal(featuredProjects[0])}
+                  >
+                    <img
+                      src={featuredProjects[0].image}
+                      alt={featuredProjects[0].title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
+                    <div className="absolute bottom-0 left-0 p-6">
+                      <h4 className="text-2xl font-bold mb-2">
+                        {featuredProjects[0].title}
+                      </h4>
+                      <p className="text-sm text-gray-300">
+                        {featuredProjects[0].description.substring(0, 80)}...
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Project 2 & 3 (Stacked) */}
+                  <div className="grid grid-rows-2 gap-6 h-96">
+                    <div
+                      className="relative rounded-lg overflow-hidden group cursor-pointer portfolio-card"
+                      onClick={() => openProjectModal(featuredProjects[1])}
+                    >
+                      <img
+                        src={featuredProjects[1].image}
+                        alt={featuredProjects[1].title}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
+                      <div className="absolute bottom-0 left-0 p-4">
+                        <h4 className="text-xl font-bold">
+                          {featuredProjects[1].title}
+                        </h4>
+                      </div>
+                    </div>
+
+                    <div
+                      className="relative rounded-lg overflow-hidden group cursor-pointer portfolio-card"
+                      onClick={() => openProjectModal(featuredProjects[2])}
+                    >
+                      <img
+                        src={featuredProjects[2].image}
+                        alt={featuredProjects[2].title}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
+                      <div className="absolute bottom-0 left-0 p-4">
+                        <h4 className="text-xl font-bold">
+                          {featuredProjects[2].title}
+                        </h4>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                <div
-                  className="relative rounded-lg overflow-hidden group cursor-pointer portfolio-card"
-                  onClick={() => openProjectModal(featuredProjects[2])}
-                >
-                  <img
-                    src={featuredProjects[2].image}
-                    alt={featuredProjects[2].title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
-                  <div className="absolute bottom-0 left-0 p-4">
-                    <h4 className="text-xl font-bold">
-                      {featuredProjects[2].title}
-                    </h4>
-                  </div>
+                <div className="flex justify-end">
+                  <button
+                    onClick={() => {
+                      setShowMoreProjects(true);
+                      setTimeout(() => scrollToSection("more-projects"), 100);
+                    }}
+                    className="flex items-center space-x-2 bg-yellow-400 text-black px-6 py-3 rounded-lg font-medium hover:bg-yellow-300 transition-colors glow-button-yellow"
+                  >
+                    <span>More Projects</span>
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M8 0L6.59 1.41L12.17 7H0V9H12.17L6.59 14.59L8 16L16 8L8 0Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </button>
                 </div>
               </div>
-            </div>
-
-            <div className="flex justify-center">
-              <button
-                onClick={() => {
-                  setShowMoreProjects(true);
-                  setTimeout(() => scrollToSection("more-projects"), 100);
-                }}
-                className="flex items-center space-x-2 bg-yellow-400 text-black px-6 py-3 rounded-lg font-medium hover:bg-yellow-300 transition-colors glow-button-yellow"
-              >
-                <span>More Projects</span>
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M8 0L6.59 1.41L12.17 7H0V9H12.17L6.59 14.59L8 16L16 8L8 0Z"
-                    fill="currentColor"
-                  />
-                </svg>
-              </button>
             </div>
           </div>
         </section>
@@ -622,7 +631,7 @@ function App() {
             <div className="flex flex-col md:flex-row items-center">
               <div className="md:w-1/3 mb-12 md:mb-0">
                 <h2 className="text-9xl font-bold text-white opacity-80 text-gradient">
-                  02
+                  03
                 </h2>
               </div>
               <div className="md:w-2/3">
