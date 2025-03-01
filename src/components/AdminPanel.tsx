@@ -7,6 +7,7 @@ interface Project {
   category: string;
   description: string;
   image: string;
+  images: string[]; // Added images array
   client: string;
   date: string;
   services: string[];
@@ -39,6 +40,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
     category: '',
     description: '',
     image: '',
+    images: [''], // Initialize images array
     client: '',
     date: '',
     services: [],
@@ -101,13 +103,20 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
     // Generate a new unique ID for the project
     const newId = Math.max(...editableProjects.map(p => p.id), 0) + 1;
 
-    // Create the new project with all required fields
+    // Make sure primary image is also in the images array
+    let projectImages = [...(newProject.images || [])].filter(img => img.trim() !== '');
+    if (newProject.image && !projectImages.includes(newProject.image)) {
+      projectImages = [newProject.image, ...projectImages];
+    }
+
+    // Create the new project with required fields
     const projectToAdd: Project = {
       id: newId,
       title: newProject.title || '',
       category: newProject.category || '',
       description: newProject.description || '',
       image: newProject.image || '',
+      images: projectImages,
       client: newProject.client || '',
       date: newProject.date || '',
       services: Array.isArray(newProject.services) ? newProject.services : 
@@ -128,6 +137,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
       category: '',
       description: '',
       image: '',
+      images: [''],
       client: '',
       date: '',
       services: [],
@@ -147,6 +157,36 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
         ? value.split(',').map((service: string) => service.trim()) 
         : value
     });
+  };
+
+  // Handle adding a new image URL field
+  const handleAddImageField = () => {
+    setNewProject(prev => ({
+      ...prev,
+      images: [...(prev.images || []), '']
+    }));
+  };
+
+  // Handle updating an image URL in the array
+  const handleImageUrlChange = (index: number, value: string) => {
+    const updatedImages = [...(newProject.images || [])];
+    updatedImages[index] = value;
+
+    setNewProject(prev => ({
+      ...prev,
+      images: updatedImages
+    }));
+  };
+
+  // Handle removing an image URL field
+  const handleRemoveImageField = (index: number) => {
+    const updatedImages = [...(newProject.images || [])];
+    updatedImages.splice(index, 1);
+
+    setNewProject(prev => ({
+      ...prev,
+      images: updatedImages
+    }));
   };
 
   // If not authenticated, show login form
@@ -372,6 +412,16 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                         />
                       </div>
                     )}
+                    {project.images && project.images.map((img, i) => (
+                      <div key={i} className="mt-2">
+                        <p className="text-gray-400 mb-1">Image Preview {i+1}:</p>
+                        <img 
+                          src={img} 
+                          alt={`Image ${i+1}`} 
+                          className="h-20 w-auto object-cover rounded"
+                        />
+                      </div>
+                    ))}
                   </div>
                 </div>
               ))}
@@ -494,6 +544,27 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                   ></textarea>
                 </div>
 
+                <div>
+                  <label className="block text-gray-400 mb-1">Additional Image URLs</label>
+                  {(newProject.images || []).map((imageUrl, index) => (
+                    <div key={index} className="flex items-center mb-2">
+                      <input
+                        type="text"
+                        value={imageUrl}
+                        onChange={(e) => handleImageUrlChange(index, e.target.value)}
+                        className="w-full bg-gray-900 border border-gray-700 rounded px-3 py-2 mr-2"
+                      />
+                      <button onClick={() => handleRemoveImageField(index)} className="text-red-500 hover:text-red-400">
+                        <Trash size={16} />
+                      </button>
+                    </div>
+                  ))}
+                  <button onClick={handleAddImageField} className="text-blue-500 hover:text-blue-400">
+                    <Plus size={16} /> Add Image URL
+                  </button>
+                </div>
+
+
                 <div className="mt-4">
                   {newProject.image && (
                     <div className="mt-2">
@@ -507,6 +578,18 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                       />
                     </div>
                   )}
+                  {(newProject.images || []).map((img, i) => (
+                    <div key={i} className="mt-2">
+                      <p className="text-gray-400 mb-1">Additional Image Preview {i+1}:</p>
+                      <img 
+                        src={img} 
+                        alt={`Preview ${i+1}`} 
+                        className="h-20 w-auto object-cover rounded"
+                        onError={(e) => (e.target as HTMLImageElement).style.display = 'none'}
+                        onLoad={(e) => (e.target as HTMLImageElement).style.display = 'block'}
+                      />
+                    </div>
+                  ))}
                 </div>
 
                 <button
