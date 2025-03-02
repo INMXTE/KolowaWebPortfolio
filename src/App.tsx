@@ -51,7 +51,7 @@ function App() {
       date: "March 2024",
       services: ["Videography", "Editing", "Sound Design"],
       featured: true,
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      videoUrl: "https://youtu.be/7dHMe0cRh5M?si=5rxdksd5cODCrdp-",
       isVideo: true,
     },
     {
@@ -76,10 +76,10 @@ function App() {
     },
     {
       id: 3,
-      title: "HEKAYA",
-      category: "Animation",
+      title: "MAMA MBOGA",
+      category: "Stop-motion Animation",
       description:
-        "An animated short film celebrating African folklore and storytelling traditions. HEKAYA brings ancient tales to life through vibrant animation and authentic voice acting.",
+        "Pooling Our Commitments - Honoring Our Heritage | Paper Cutout Animation.",
       image:
         "https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       images: [
@@ -87,11 +87,11 @@ function App() {
         "https://images.unsplash.com/photo-1561211919-1947abbbb35b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
         "https://images.unsplash.com/photo-1550747545-c896b5f89ff7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
       ],
-      client: "Storytellers Collective",
-      date: "November 2023",
+      client: "Sarafu Network",
+      date: "December 2024",
       services: ["Character Design", "Animation", "Storyboarding"],
       featured: true,
-      videoUrl: "https://www.youtube.com/embed/oH3L75btuQY",
+      videoUrl: "https://youtu.be/7dHMe0cRh5M?si=5rxdksd5cODCrdp-",
       isVideo: true,
     },
     {
