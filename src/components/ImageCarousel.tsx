@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -9,6 +8,7 @@ interface ImageCarouselProps {
   onNext: () => void;
   isVideo?: boolean;
   videoUrl?: string;
+  isExpanded: boolean;
 }
 
 const ImageCarousel: React.FC<ImageCarouselProps> = ({
@@ -17,13 +17,14 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
   onPrevious,
   onNext,
   isVideo,
-  videoUrl
+  videoUrl,
+  isExpanded
 }) => {
   if (!images || images.length === 0) {
     return null;
   }
 
-  const showNavigation = images.length > 1;
+  const showNavigation = isExpanded && images.length > 1;
 
   return (
     <div className="relative w-full h-full group">
@@ -51,7 +52,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
                   e.stopPropagation();
                   onPrevious();
                 }}
-                className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-1 transition-opacity opacity-0 group-hover:opacity-100 focus:outline-none"
+                className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-1 transition-opacity opacity-100 focus:outline-none z-50 pointer-events-auto"
                 aria-label="Previous image"
               >
                 <ChevronLeft size={24} />
@@ -62,13 +63,13 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
                   e.stopPropagation();
                   onNext();
                 }}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-1 transition-opacity opacity-0 group-hover:opacity-100 focus:outline-none"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-1 transition-opacity opacity-100 focus:outline-none z-50 pointer-events-auto"
                 aria-label="Next image"
               >
                 <ChevronRight size={24} />
               </button>
               
-              <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-1 opacity-100 transition-opacity">
                 {images.map((_, index) => (
                   <div 
                     key={index}

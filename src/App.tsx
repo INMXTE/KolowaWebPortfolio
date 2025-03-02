@@ -41,9 +41,9 @@ function App() {
       description:
         "A powerful documentary showcasing indigenous cultural preservation through the eyes of local communities. This project explores the rich heritage and traditions that are at risk of being lost in the modern world.",
       image:
-        "https://images.unsplash.com/photo-1516939884455-1445c8652f83?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        "https://images.unsplash.com/photo-1516939884455-1445f8652f83?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
       images: [
-        "https://images.unsplash.com/photo-1516939884455-1445c8652f83?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        "https://images.unsplash.com/photo-1516939884455-1445f8652f83?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
         "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
         "https://images.unsplash.com/photo-1551966775-a4ddc8df052b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
       ],
@@ -383,6 +383,14 @@ function App() {
             About
           </button>
           <button
+            onClick={() => scrollToSection("services")}
+            className={`${
+              activeSection === "services" ? "text-red-500" : "text-white"
+            } hover:text-red-400 transition-colors`}
+          >
+            Services
+          </button>
+          <button
             onClick={() => scrollToSection("portfolio")}
             className={`${
               activeSection === "portfolio" ? "text-red-500" : "text-white"
@@ -435,6 +443,12 @@ function App() {
               className="text-2xl font-bold hover:text-red-500 transition-colors"
             >
               About
+            </button>
+            <button
+              onClick={() => scrollToSection("services")}
+              className="text-2xl font-bold hover:text-red-500 transition-colors"
+            >
+              Services
             </button>
             <button
               onClick={() => scrollToSection("portfolio")}
@@ -535,6 +549,69 @@ function App() {
           </div>
         </section>
 
+        {/* Services Section */}
+        <section
+          id="services"
+          className="min-h-screen flex items-center relative py-24"
+        >
+          <div className="container mx-auto px-6">
+            <div className="flex flex-col md:flex-row items-center">
+              <div className="md:w-1/3 mb-12 md:mb-0">
+                <h2 className="text-9xl font-bold text-white opacity-80 text-gradient">
+                  02
+                </h2>
+              </div>
+              <div className="md:w-2/3">
+                <h3 className="text-4xl font-bold mb-8">Our Services</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  <div 
+                    className="bg-black/20 p-6 rounded-lg hover:bg-black/30 transition-colors cursor-pointer"
+                    onClick={() => scrollToSection('portfolio')}
+                  >
+                    <img
+                      src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                      alt="Stop-motion Animation"
+                      className="w-full h-48 object-cover rounded-lg mb-4"
+                    />
+                    <h4 className="text-2xl font-bold mb-4">Stop-motion Animation</h4>
+                    <p className="text-gray-300">
+                      We bring stories to life through meticulously crafted stop-motion animation, combining traditional techniques with modern technology.
+                    </p>
+                  </div>
+                  <div 
+                    className="bg-black/20 p-6 rounded-lg hover:bg-black/30 transition-colors cursor-pointer"
+                    onClick={() => scrollToSection('portfolio')}
+                  >
+                    <img
+                      src="https://images.unsplash.com/photo-1578301978018-300a81b9a9f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                      alt="Art"
+                      className="w-full h-48 object-cover rounded-lg mb-4"
+                    />
+                    <h4 className="text-2xl font-bold mb-4">Art</h4>
+                    <p className="text-gray-300">
+                      Our art services range from conceptual illustrations to large-scale installations, blending traditional and digital mediums.
+                    </p>
+                  </div>
+                  <div 
+                    className="bg-black/20 p-6 rounded-lg hover:bg-black/30 transition-colors cursor-pointer"
+                    onClick={() => scrollToSection('portfolio')}
+                  >
+                    <img
+                      src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                      alt="Design"
+                      className="w-full h-48 object-cover rounded-lg mb-4"
+                    />
+                    <h4 className="text-2xl font-bold mb-4">Design</h4>
+                    <p className="text-gray-300">
+                      We create visually stunning designs that communicate brand identity and tell compelling stories across various media.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Portfolio Section */}
         <section
           id="portfolio"
@@ -544,7 +621,7 @@ function App() {
             <div className="flex flex-col md:flex-row items-center">
               <div className="md:w-1/3 mb-12 md:mb-0">
                 <h2 className="text-9xl font-bold text-red-500 opacity-80 text-gradient">
-                  02
+                  03
                 </h2>
               </div>
               <div className="md:w-2/3">
@@ -563,6 +640,7 @@ function App() {
                       onNext={() => navigateProjectImage(featuredProjects[0].id, 'next')}
                       isVideo={featuredProjects[0].isVideo}
                       videoUrl={featuredProjects[0].isVideo ? featuredProjects[0].videoUrl : undefined}
+                      isExpanded={showPortfolioModal}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
                     <div className="absolute bottom-0 left-0 p-6">
@@ -586,6 +664,7 @@ function App() {
                         currentIndex={projectImageIndices[featuredProjects[1].id] || 0}
                         onPrevious={() => navigateProjectImage(featuredProjects[1].id, 'prev')}
                         onNext={() => navigateProjectImage(featuredProjects[1].id, 'next')}
+                        isExpanded={showPortfolioModal}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
                       <div className="absolute bottom-0 left-0 p-4">
@@ -606,6 +685,7 @@ function App() {
                         onNext={() => navigateProjectImage(featuredProjects[2].id, 'next')}
                         isVideo={featuredProjects[2].isVideo}
                         videoUrl={featuredProjects[2].isVideo ? featuredProjects[2].videoUrl : undefined}
+                        isExpanded={showPortfolioModal}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
                       <div className="absolute bottom-0 left-0 p-4">
@@ -669,6 +749,7 @@ function App() {
                     onNext={() => navigateProjectImage(project.id, 'next')}
                     isVideo={project.isVideo}
                     videoUrl={project.isVideo ? project.videoUrl : undefined}
+                    isExpanded={showPortfolioModal}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
 
@@ -711,7 +792,7 @@ function App() {
             <div className="flex flex-col md:flex-row items-center">
               <div className="md:w-1/3 mb-12 md:mb-0">
                 <h2 className="text-9xl font-bold text-white opacity-80 text-gradient">
-                  03
+                  04
                 </h2>
               </div>
               <div className="md:w-2/3">
@@ -841,7 +922,7 @@ function App() {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-4 md:mb-0">
               <p className="text-gray-500">
-                © 2025 KOLOWA Studio. All rights reserved.
+                &copy; 2025 KOLOWA Studio. All rights reserved.
               </p>
             </div>
 
@@ -876,6 +957,7 @@ function App() {
                 onNext={() => navigateProjectImage(selectedProject.id, 'next')}
                 isVideo={selectedProject.isVideo}
                 videoUrl={selectedProject.isVideo ? selectedProject.videoUrl : undefined}
+                isExpanded={showPortfolioModal}
               />
               {!selectedProject.isVideo && (
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] to-transparent opacity-30"></div>

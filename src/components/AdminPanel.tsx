@@ -16,6 +16,17 @@ interface Project {
   isVideo?: boolean;
 }
 
+interface ServiceContent {
+  image: string;
+  description: string;
+}
+
+interface ServicesContent {
+  stopMotion: ServiceContent;
+  art: ServiceContent;
+  design: ServiceContent;
+}
+
 interface AdminPanelProps {
   isOpen: boolean;
   onClose: () => void;
@@ -47,6 +58,20 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
     featured: false,
     videoUrl: '',
     isVideo: false
+  });
+  const [servicesContent, setServicesContent] = useState<ServicesContent>({
+    stopMotion: {
+      image: '',
+      description: ''
+    },
+    art: {
+      image: '',
+      description: ''
+    },
+    design: {
+      image: '',
+      description: ''
+    }
   });
 
   useEffect(() => {
@@ -189,6 +214,21 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
     }));
   };
 
+  const handleUpdateService = (service: keyof ServicesContent, field: keyof ServiceContent, value: string) => {
+    setServicesContent(prev => ({
+      ...prev,
+      [service]: {
+        ...prev[service],
+        [field]: value
+      }
+    }));
+  };
+
+  const handleSaveServices = () => {
+    // TODO: Implement save functionality
+    alert('Services content saved successfully!');
+  };
+
   // If not authenticated, show login form
   if (!isAuthenticated) {
     return (
@@ -273,6 +313,12 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
             onClick={() => setActiveTab('add-project')}
           >
             Add New Project
+          </button>
+          <button
+            className={`px-4 py-2 ${activeTab === 'services' ? 'text-red-500 border-b-2 border-red-500' : 'text-gray-400'}`}
+            onClick={() => setActiveTab('services')}
+          >
+            Services
           </button>
         </div>
 
@@ -645,6 +691,47 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                     </ul>
                   </div>
                 </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'services' && (
+            <div className="space-y-6">
+              <h3 className="text-xl font-bold mb-4">Manage Services Content</h3>
+              <div className="space-y-8">
+                {['stopMotion', 'art', 'design'].map((service) => (
+                  <div key={service} className="bg-[#1a1a1a] p-6 rounded-lg">
+                    <h4 className="text-lg font-semibold mb-4 capitalize">
+                      {service.split(/(?=[A-Z])/).join(' ')}
+                    </h4>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium mb-1">Image URL</label>
+                        <input
+                          type="text"
+                          value={servicesContent[service as keyof ServicesContent].image}
+                          onChange={(e) => handleUpdateService(service as keyof ServicesContent, 'image', e.target.value)}
+                          className="w-full bg-[#0a0a0a] text-white rounded-md p-2"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-1">Description</label>
+                        <textarea
+                          value={servicesContent[service as keyof ServicesContent].description}
+                          onChange={(e) => handleUpdateService(service as keyof ServicesContent, 'description', e.target.value)}
+                          className="w-full bg-[#0a0a0a] text-white rounded-md p-2 min-h-[100px]"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                <button
+                  onClick={handleSaveServices}
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md flex items-center gap-2"
+                >
+                  <Save size={18} />
+                  Save All Services
+                </button>
               </div>
             </div>
           )}
